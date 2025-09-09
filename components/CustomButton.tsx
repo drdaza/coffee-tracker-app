@@ -3,11 +3,13 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
 
 export type CustomButtonType = 'base' | 'delete' | 'action';
+export type CustomButtonSize = 'small' | 'medium' | 'large' | 'full';
 
 interface CustomButtonProps extends Omit<PressableProps, 'style'> {
   type?: CustomButtonType;
   label: string;
   style?: ViewStyle;
+  size?: CustomButtonSize;
 }
 
 const baseStyle: ViewStyle = {
@@ -15,10 +17,24 @@ const baseStyle: ViewStyle = {
   borderRadius: 8,
   alignItems: 'center',
   justifyContent: 'center',
-  minWidth: 100,
 };
 
-export function CustomButton({ type = 'base', label, style, onPress, ...props }: CustomButtonProps) {
+const sizeStyleMap: Record<CustomButtonSize, ViewStyle> = {
+  small: {
+    width: 100,
+  },
+  medium: {
+    width: 150,
+  },
+  large: {
+    width: 200,
+  },
+  full: {
+    width: '100%',
+  },
+};
+
+export function CustomButton({ type = 'base', label, style, size = 'medium', onPress, ...props }: CustomButtonProps) {
   const colorScheme = useColorScheme() ?? 'light';
   const tint = useThemeColor({}, 'tint');
   const textBase = useThemeColor({}, 'input');
@@ -44,10 +60,13 @@ export function CustomButton({ type = 'base', label, style, onPress, ...props }:
     action: textBase,
   };
 
+  const sizeStyle = sizeStyleMap[size];
+
   return (
     <Pressable
       style={({ pressed }) => [
         buttonStyleMap[type],
+        sizeStyle,
         {
           opacity: pressed ? 0.8 : 1,
         },

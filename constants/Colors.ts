@@ -6,10 +6,10 @@ const tintColorDark = '#c19a6b';  // latte brown
 export const Colors = {
   light: {
     text: '#0c0907',        // almost black
-    background: '#f9f2e6',  // light cream
+    background: '#f0e2cd',  // light cream
     tint: tintColorLight,   // buttons / highlights
     icon: '#a39789',        // taupe gray
-    input: '#f0e2cd',       // beige input fields
+    input: '#f9f2e6',       // beige input fields
     tabIconDefault: '#a39789',
     tabIconSelected: tintColorLight,
   },

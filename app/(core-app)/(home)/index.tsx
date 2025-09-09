@@ -1,4 +1,5 @@
 import { CustomButton } from '@/components/CustomButton'
+import { CustomInput } from '@/components/CustomInput'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
 import { Text, View } from 'react-native'
@@ -14,7 +15,9 @@ const HomeScreen = () => {
         backgroundColor: background
        }}>
       <Text style={{color: text}}>aaaaaaaaaaaaaaaaaaaaaaaa</Text>
-      <CustomButton label="Click me" />
+      <CustomInput placeholder="Enter username..." style={{ marginBottom: 16 }} size="large" label="Username" showLabel />
+      <CustomInput placeholder="Enter password..." style={{ marginBottom: 16 }} size="large" label="Password" showLabel />
+      <CustomButton label="Click me" size="large" />
     </View>
   )
 }
