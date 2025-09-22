@@ -1,10 +1,15 @@
-import { Stack } from 'expo-router';
+import { AuthStatus } from '@/constants/authStatus';
+import { useAuthStore } from '@/stores/authStore';
+import { Redirect, Stack } from 'expo-router';
 import React from 'react';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+
+  const authStatus = useAuthStore((state) => state.authStatus);
+
+  if (authStatus === AuthStatus.LOGGED_OUT) {
+    return <Redirect href="/auth/login" />;
+  }
 
   return (
     <Stack

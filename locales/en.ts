@@ -1,0 +1,43 @@
+export default {
+  common: {
+    welcome: 'Welcome',
+    username: 'Username',
+    password: 'Password',
+    email: 'Email',
+    login: 'Login',
+    signup: 'Sign Up',
+    cancel: 'Cancel',
+    save: 'Save',
+    delete: 'Delete',
+    edit: 'Edit',
+    loading: 'Loading...',
+    error: 'Error',
+    success: 'Success',
+  },
+  home: {
+    title: 'Coffee Tracker',
+    enterUsername: 'Enter username...',
+    enterPassword: 'Enter password...',
+    clickMe: 'Click me',
+    welcome: 'Welcome to Coffee Tracker!',
+    loggedInMessage: 'You are successfully logged in. Start tracking your coffee journey!',
+  },
+  auth: {
+    login: 'Log In',
+    logout: 'Log Out',
+    register: 'Sign Up',
+    dontHaveAccount: "Don't have an account? Sign up",
+    alreadyHaveAccount: 'Already have an account? Log in',
+    enterEmail: 'Enter email...',
+    confirmPassword: 'Confirm Password',
+  },
+  placeholders: {
+    username: 'Enter username...',
+    password: 'Enter password...',
+  },
+  validation: {
+    required: 'This field is required',
+    invalidEmail: 'Please enter a valid email',
+    passwordTooShort: 'Password must be at least 6 characters',
+  },
+} as const;

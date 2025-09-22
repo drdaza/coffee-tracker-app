@@ -1,0 +1,43 @@
+export default {
+  common: {
+    welcome: 'Bienvenido',
+    username: 'Nombre de usuario',
+    password: 'Contraseña',
+    email: 'Correo electrónico',
+    login: 'Iniciar sesión',
+    signup: 'Registrarse',
+    cancel: 'Cancelar',
+    save: 'Guardar',
+    delete: 'Eliminar',
+    edit: 'Editar',
+    loading: 'Cargando...',
+    error: 'Error',
+    success: 'Éxito',
+  },
+  home: {
+    title: 'Rastreador de Café',
+    enterUsername: 'Ingresa nombre de usuario...',
+    enterPassword: 'Ingresa contraseña...',
+    clickMe: 'Haz clic aquí',
+    welcome: '¡Bienvenido a Coffee Tracker!',
+    loggedInMessage: 'Has iniciado sesión exitosamente. ¡Comienza a rastrear tu jornada cafetera!',
+  },
+  auth: {
+    login: 'Iniciar Sesión',
+    logout: 'Cerrar Sesión',
+    register: 'Registrarse',
+    dontHaveAccount: '¿No tienes una cuenta? Regístrate',
+    alreadyHaveAccount: '¿Ya tienes una cuenta? Inicia sesión',
+    enterEmail: 'Ingresa correo electrónico...',
+    confirmPassword: 'Confirmar Contraseña',
+  },
+  placeholders: {
+    username: 'Ingresa nombre de usuario...',
+    password: 'Ingresa contraseña...',
+  },
+  validation: {
+    required: 'Este campo es obligatorio',
+    invalidEmail: 'Por favor ingresa un email válido',
+    passwordTooShort: 'La contraseña debe tener al menos 6 caracteres',
+  },
+} as const;
