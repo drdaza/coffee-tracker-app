@@ -8,6 +8,9 @@
     "scheme": "coffetrackerapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "packagerOpts": {
+      "port": 3000
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -33,7 +36,9 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

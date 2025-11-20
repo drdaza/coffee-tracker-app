@@ -1,4 +1,3 @@
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
 
@@ -35,7 +34,6 @@ const sizeStyleMap: Record<CustomButtonSize, ViewStyle> = {
 };
 
 export function CustomButton({ type = 'base', label, style, size = 'medium', onPress, ...props }: CustomButtonProps) {
-  const colorScheme = useColorScheme() ?? 'light';
   const tint = useThemeColor({}, 'tint');
   const textBase = useThemeColor({}, 'input');
 
@@ -46,7 +44,7 @@ export function CustomButton({ type = 'base', label, style, size = 'medium', onP
     },
     delete: {
       ...baseStyle,
-      backgroundColor: '#e74c3c', // Red for delete
+      backgroundColor: '#e74c3c',
     },
     action: {
       ...baseStyle,
@@ -55,8 +53,8 @@ export function CustomButton({ type = 'base', label, style, size = 'medium', onP
   };
 
   const textColorMap: Record<CustomButtonType, string> = {
-    base: tint,
-    delete: '#ffffff', // White text for delete button
+    base: textBase,
+    delete: '#ffffff',
     action: textBase,
   };
 
@@ -78,7 +76,7 @@ export function CustomButton({ type = 'base', label, style, size = 'medium', onP
       <Text
         style={[
           styles.text,
-          { color: textBase },
+          { color: textColorMap[type] },
         ]}
       >
         {label}

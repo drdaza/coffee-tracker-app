@@ -1,95 +1,128 @@
-import LogoCoffeeChartCenter from '@/assets/svgs/logo_coffee_chart_centered_v2.svg'
-import { CustomButton } from '@/components/CustomButton'
-import { CustomInput } from '@/components/CustomInput'
-import { useThemeColor } from '@/hooks/useThemeColor'
-import { useTranslation } from '@/hooks/useTranslation'
-import { router } from 'expo-router'
-import React, { useState } from 'react'
-import { Pressable, Text, View } from 'react-native'
+import LogoCoffeeChartCenter from "@/assets/svgs/logo_coffee_chart_centered_v2.svg";
+import { CustomButton } from "@/components/CustomButton";
+import { CustomInput } from "@/components/CustomInput";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useAuthStore } from "@/stores/authStore";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Pressable, Text, View, Alert, ActivityIndicator } from "react-native";
 
 const LoginScreen = () => {
-  const background = useThemeColor({}, 'background')
-  const tint = useThemeColor({}, 'tint')
-  const { t } = useTranslation()
+  const background = useThemeColor({}, "background");
+  const tint = useThemeColor({}, "tint");
+  const { t } = useTranslation();
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const { login, isLoading, error } = useAuthStore();
 
-  const handleLogin = () => {
-    // TODO: Implement actual login logic
-    console.log('Login with:', username, password)
-    // For now, just navigate to home
-    router.replace('/(core-app)/(home)')
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter email and password");
+      return;
+    }
+
+    try {
+      await login(email, password);
+      router.replace("/(core-app)/(home)");
+    } catch {
+      Alert.alert("Login Failed", error || "An error occurred");
+    }
+  };
 
   const handleNavigateToRegister = () => {
-    router.push('/auth/register')
-  }
+    router.push("/auth/register");
+  };
 
   return (
-    <View style={{
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: background,
-    }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: background,
+      }}
+    >
       {/* Language selector at top */}
       {/* <View style={{ position: 'absolute', top: 60, right: 20 }}>
         <LanguageSelector />
       </View> */}
 
-      <View style={{ 
-        flex: 1,
-        justifyContent: 'center',
-
-      }}>
-        <LogoCoffeeChartCenter
-          width={200}
-          height={200}
-          color={tint}
-        />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <LogoCoffeeChartCenter width={200} height={200} color={tint} />
       </View>
 
-      <View style={{ 
-        flex: 1,
-        gap: 10,
-        alignItems: 'center',
-        }}>
+      <View
+        style={{
+          flex: 1,
+          gap: 10,
+          alignItems: "center",
+        }}
+      >
         <CustomInput
-          placeholder={t('home.enterUsername')}
+          placeholder="email@example.com"
           size="large"
-          label={t('common.username')}
+          label={t("common.email") || "Email"}
           showLabel
-          value={username}
-          onChangeText={setUsername}
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          editable={!isLoading}
         />
         <CustomInput
-          placeholder={t('home.enterPassword')}
+          placeholder={t("home.enterPassword")}
           size="large"
-          label={t('common.password')}
+          label={t("common.password")}
           showLabel
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-        />
-        <CustomButton
-          label={t('auth.login')}
-          size="large"
-          onPress={handleLogin}
+          editable={!isLoading}
         />
 
+        {error && (
+          <Text style={{ color: "red", fontSize: 14, marginTop: 5 }}>
+            {error}
+          </Text>
+        )}
+
+        <CustomButton
+          label={isLoading ? "Logging in..." : t("auth.login")}
+          size="large"
+          onPress={handleLogin}
+          disabled={isLoading}
+        />
+
+        {isLoading && (
+          <ActivityIndicator
+            size="small"
+            color={tint}
+            style={{ marginTop: 10 }}
+          />
+        )}
+
         <Pressable onPress={handleNavigateToRegister}>
-          <Text style={{
-            color: tint,
-            textAlign: 'center',
-            fontSize: 16
-          }}>
-            {t('auth.dontHaveAccount')}
+          <Text
+            style={{
+              color: tint,
+              textAlign: "center",
+              fontSize: 16,
+            }}
+          >
+            {t("auth.dontHaveAccount")}
           </Text>
         </Pressable>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default LoginScreen
+export default LoginScreen;
