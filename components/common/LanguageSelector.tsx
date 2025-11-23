@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useThemeColor } from '@/hooks/useThemeColor';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useThemeColor } from '@/hooks/theme/useThemeColor';
+import { useTranslation } from '@/hooks/i18n/useTranslation';
 
 interface LanguageSelectorProps {
   style?: any;

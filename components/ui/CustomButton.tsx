@@ -1,4 +1,4 @@
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks/theme/useThemeColor';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
 
 export type CustomButtonType = 'base' | 'delete' | 'action';

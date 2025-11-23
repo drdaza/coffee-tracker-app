@@ -29,10 +29,9 @@ export const refreshAccessToken = async (): Promise<string> => {
     throw new Error("No refresh token available");
   }
 
-  const { data } = await apiClient.post<RefreshTokenResponse>(
-    "/auth/refresh-access-token",
-    { refreshToken },
-  );
+  const { data } = await apiClient.post<RefreshTokenResponse>("/auth/refresh", {
+    refreshToken,
+  });
 
   await tokenStorage.setAccessToken(data.token);
 
@@ -41,7 +40,7 @@ export const refreshAccessToken = async (): Promise<string> => {
 
 export const checkAuthStatus = async (): Promise<User> => {
   const { data } =
-    await apiClient.get<CheckStatusResponse>("/auth/check-status");
+    await apiClient.get<CheckStatusResponse>("/auth/check-token");
   return data.user;
 };
 

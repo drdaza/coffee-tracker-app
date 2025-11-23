@@ -132,12 +132,9 @@ function createApiClient(): AxiosInstance {
           }
 
           // Refresh the access token
-          const response = await axios.post(
-            `${API_BASE_URL}/auth/refresh-access-token`,
-            {
-              refreshToken,
-            },
-          );
+          const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+            refreshToken,
+          });
 
           const newAccessToken = response.data.token;
           await tokenStorage.setAccessToken(newAccessToken);

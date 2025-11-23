@@ -39,6 +39,7 @@ A React Native mobile application for tracking your coffee consumption and brewi
    ```
 
    Update the values in `.env`:
+
    ```bash
    EXPO_PUBLIC_STAGE=dev
    EXPO_PUBLIC_API_URL=http://192.168.x.xx:3000/api
@@ -57,12 +58,12 @@ A React Native mobile application for tracking your coffee consumption and brewi
    ```
 
    Or:
+
    ```bash
    bunx expo start
    ```
 
 2. Run on your preferred platform:
-
    - Press `i` for iOS simulator
    - Press `a` for Android emulator
    - Scan QR code with Expo Go app for physical device
@@ -101,12 +102,12 @@ For detailed development guidelines and architecture patterns, see [CLAUDE.md](.
 
 ## Environment Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `EXPO_PUBLIC_STAGE` | Environment stage | `dev` / `prod` |
-| `EXPO_PUBLIC_API_URL` | Default API URL | `http://192.168.1.24:3000/api` |
+| Variable                      | Description              | Example                        |
+| ----------------------------- | ------------------------ | ------------------------------ |
+| `EXPO_PUBLIC_STAGE`           | Environment stage        | `dev` / `prod`                 |
+| `EXPO_PUBLIC_API_URL`         | Default API URL          | `http://192.168.1.24:3000/api` |
 | `EXPO_PUBLIC_API_URL_ANDROID` | Android-specific API URL | `http://192.168.1.24:3000/api` |
-| `EXPO_PUBLIC_API_URL_IOS` | iOS-specific API URL | `http://localhost:3000/api` |
+| `EXPO_PUBLIC_API_URL_IOS`     | iOS-specific API URL     | `http://localhost:3000/api`    |
 
 ## Scripts
 
@@ -124,14 +125,16 @@ bun run reset-project  # Reset to blank project
 This app requires a backend API. Make sure your backend server is running and accessible at the URL specified in your `.env` file.
 
 Default backend endpoints:
+
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
-- `POST /api/auth/refresh-access-token`
-- `GET /api/auth/check-status`
+- `POST /api/auth/refresh`
+- `GET /api/auth/check-token`
 
 ## Troubleshooting
 
 **"Unable to resolve axios"**
+
 ```bash
 rm -rf .expo node_modules
 bun install
@@ -139,11 +142,13 @@ bunx expo start --clear
 ```
 
 **Network error / Cannot connect to API**
+
 - Verify backend is running
 - Check your local IP in `.env` matches your computer's IP
 - Ensure device/emulator is on the same network
 
 **iOS can use localhost, Android cannot**
+
 - This is expected behavior
 - Android uses your local IP (e.g., `192.168.1.24`)
 - iOS Simulator can use `localhost`

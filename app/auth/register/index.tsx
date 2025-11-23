@@ -1,8 +1,8 @@
 import LogoCoffeeChartCenter from "@/assets/svgs/logo_coffee_chart_centered_v2.svg";
-import { CustomButton } from "@/components/CustomButton";
-import { CustomInput } from "@/components/CustomInput";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useTranslation } from "@/hooks/useTranslation";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomInput } from "@/components/ui/CustomInput";
+import { useThemeColor } from "@/hooks/theme/useThemeColor";
+import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
