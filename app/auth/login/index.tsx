@@ -67,9 +67,9 @@ const LoginScreen = () => {
         }}
       >
         <CustomInput
-          placeholder="email@example.com"
+          placeholder={t("auth.emailPlaceholder")}
           size="large"
-          label={t("common.email") || "Email"}
+          label={t("auth.emailLabel")}
           showLabel
           keyboardType="email-address"
           value={email}
@@ -78,9 +78,9 @@ const LoginScreen = () => {
           editable={!isLoading}
         />
         <CustomInput
-          placeholder={t("home.enterPassword")}
+          placeholder={t("auth.passwordPlaceholder")}
           size="large"
-          label={t("common.password")}
+          label={t("auth.passwordLabel")}
           showLabel
           value={password}
           onChangeText={setPassword}
@@ -95,7 +95,7 @@ const LoginScreen = () => {
         )}
 
         <CustomButton
-          label={isLoading ? "Logging in..." : t("auth.login")}
+          label={isLoading ? "Logging in..." : t("auth.loginButton")}
           size="large"
           onPress={handleLogin}
           disabled={isLoading}

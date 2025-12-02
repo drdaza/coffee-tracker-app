@@ -59,7 +59,7 @@ const HomeScreen = () => {
       </Text>
 
       <CustomButton
-        label={t('auth.logout')}
+        label={t('auth.logoutButton')}
         size="large"
         type="delete"
         onPress={handleLogout}

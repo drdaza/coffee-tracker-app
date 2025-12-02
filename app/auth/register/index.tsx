@@ -55,20 +55,19 @@ const RegisterScreen = () => {
 
       <View style={{ width: "100%", maxWidth: 300 }}>
         <CustomInput
-          placeholder={t("home.enterUsername")}
+          placeholder={t("auth.usernamePlaceholder")}
           style={{ marginBottom: 16 }}
           size="large"
-          label={t("common.username")}
+          label={t("auth.usernameLabel")}
           showLabel
-          keyboardType="email-address"
           value={username}
           onChangeText={setUsername}
         />
         <CustomInput
-          placeholder={t("auth.enterEmail")}
+          placeholder={t("auth.emailPlaceholder")}
           style={{ marginBottom: 16 }}
           size="large"
-          label={t("common.email")}
+          label={t("auth.emailLabel")}
           showLabel
           value={email}
           onChangeText={setEmail}
@@ -76,27 +75,27 @@ const RegisterScreen = () => {
           autoCapitalize="none"
         />
         <CustomInput
-          placeholder={t("home.enterPassword")}
+          placeholder={t("auth.passwordPlaceholder")}
           style={{ marginBottom: 16 }}
           size="large"
-          label={t("common.password")}
+          label={t("auth.passwordLabel")}
           showLabel
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
         <CustomInput
-          placeholder={t("auth.confirmPassword")}
+          placeholder={t("auth.confirmPasswordPlaceholder")}
           style={{ marginBottom: 24 }}
           size="large"
-          label={t("auth.confirmPassword")}
+          label={t("auth.confirmPasswordLabel")}
           showLabel
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
         />
         <CustomButton
-          label={t("auth.register")}
+          label={t("auth.registerButton")}
           size="large"
           onPress={handleRegister}
           style={{ marginBottom: 16 }}
