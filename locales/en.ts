@@ -13,6 +13,13 @@ export default {
     welcome: "Welcome to Coffee Tracker!",
     loggedInMessage:
       "You are successfully logged in. Start tracking your coffee journey!",
+    sortLabel: "Sort:",
+    sortMostRecent: "Most Recent",
+    sortOldest: "Oldest",
+    sortNameAZ: "Name (A-Z)",
+    sortNameZA: "Name (Z-A)",
+    noCoffeesYet: "No coffees yet",
+    noCoffeesMessage: "Start by adding your first coffee!",
   },
   auth: {
     usernameLabel: "Username",
