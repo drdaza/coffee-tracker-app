@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import type { Coffee } from "@/api/coffee";
 import { useFormatDate } from "@/hooks/utils/useFormatDate";
+import { StarRating } from "@/components/common/StarRating";
 
 export interface CoffeeCardProps {
   coffee: Coffee;
@@ -11,7 +12,6 @@ export interface CoffeeCardProps {
   textColor: string;
   iconColor: string;
 }
-
 const BrewingMethodIcon = ({
   size = 32,
   color,
@@ -22,23 +22,6 @@ const BrewingMethodIcon = ({
   return <Ionicons name="cafe" size={size} color={color} />;
 };
 
-const StarRating = ({ rating }: { rating: number }) => {
-  const starColor = "#D4A574"; // Coffee gold color
-
-  return (
-    <View style={styles.ratingContainer}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Ionicons
-          key={star}
-          name={star <= rating ? "star" : "star-outline"}
-          size={18}
-          color={starColor}
-        />
-      ))}
-    </View>
-  );
-};
-
 export const CoffeeCard = ({
   coffee,
   onPress,
@@ -47,9 +30,6 @@ export const CoffeeCard = ({
   iconColor,
 }: CoffeeCardProps) => {
   const { formatDate } = useFormatDate();
-
-  // Mock rating for now (will come from tastings later)
-  const rating = 5;
 
   return (
     <Pressable onPress={onPress}>
@@ -79,7 +59,12 @@ export const CoffeeCard = ({
               >
                 {coffee.roaster}
               </Text>
-              <StarRating rating={rating} />
+              {coffee.rate !== undefined && coffee.rate > 0 && (
+                <StarRating
+                  rating={coffee.rate}
+                  containerStyle={styles.ratingContainer}
+                />
+              )}
               <View style={styles.dateContainer}>
                 <Ionicons name="calendar" size={14} color={iconColor} />
                 <Text style={[styles.date, { color: iconColor }]}>

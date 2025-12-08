@@ -62,14 +62,14 @@ function createApiClient(): AxiosInstance {
         config.headers.Authorization = `Bearer ${token}`;
       }
 
-      if (__DEV__) {
-        console.log(
-          `[API Request] ${config.method?.toUpperCase()} ${config.url}`,
-          {
-            data: config.data,
-          },
-        );
-      }
+      // if (__DEV__) {
+      //   console.log(
+      //     `[API Request] ${config.method?.toUpperCase()} ${config.url}`,
+      //     {
+      //       data: config.data,
+      //     },
+      //   );
+      // }
 
       return config;
     },
@@ -80,15 +80,15 @@ function createApiClient(): AxiosInstance {
 
   client.interceptors.response.use(
     (response) => {
-      if (__DEV__) {
-        console.log(
-          `[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
-          {
-            status: response.status,
-            data: response.data,
-          },
-        );
-      }
+      // if (__DEV__) {
+      //   console.log(
+      //     `[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
+      //     {
+      //       status: response.status,
+      //       data: response.data,
+      //     },
+      //   );
+      // }
 
       return response;
     },
