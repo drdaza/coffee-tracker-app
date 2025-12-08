@@ -1,7 +1,11 @@
-import { Tabs } from "expo-router";
+import { withLayoutContext } from "expo-router";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
-import { Ionicons } from "@expo/vector-icons";
+
+const { Navigator } = createMaterialTopTabNavigator();
+
+export const MaterialTopTabs = withLayoutContext(Navigator);
 
 export default function CoffeesLayout() {
   const background = useThemeColor({}, "background");
@@ -10,34 +14,35 @@ export default function CoffeesLayout() {
   const { t } = useTranslation();
 
   return (
-    <Tabs
+    <MaterialTopTabs
       screenOptions={{
-        headerShown: false,
         tabBarStyle: {
           backgroundColor: background,
         },
         tabBarActiveTintColor: tint,
         tabBarInactiveTintColor: text,
+        tabBarIndicatorStyle: {
+          backgroundColor: tint,
+        },
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: "600",
+          textTransform: "none",
+        },
       }}
     >
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="(my-collection)/index"
         options={{
           title: t("coffees.myCollection"),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" color={color} size={size} />
-          ),
         }}
       />
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="(my-creations)/index"
         options={{
           title: t("coffees.myCreations"),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="create-outline" color={color} size={size} />
-          ),
         }}
       />
-    </Tabs>
+    </MaterialTopTabs>
   );
 }

@@ -47,21 +47,21 @@ export default function TabLayout() {
         },
       }}
     >
-      {/*<Drawer.Screen
-        name="(home)/index"
-        options={{
-          title: t("home.title"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} />
-          ),
-        }}
-      />*/}
       <Drawer.Screen
         name="(coffees)"
         options={{
           title: "Coffees",
           drawerIcon: ({ color, size }) => (
             <Ionicons name="cafe-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="(home)/index"
+        options={{
+          title: t("home.title"),
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" color={color} size={size} />
           ),
         }}
       />
