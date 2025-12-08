@@ -36,6 +36,10 @@ export default {
     dontHaveAccount: "¿No tienes una cuenta? Regístrate",
     alreadyHaveAccount: "¿Ya tienes una cuenta? Inicia sesión",
   },
+  coffees: {
+    myCollection: "Mi Colección",
+    myCreations: "Mis Cafés Creados",
+  },
   validation: {
     required: "Este campo es obligatorio",
     invalidEmail: "Por favor ingresa un email válido",

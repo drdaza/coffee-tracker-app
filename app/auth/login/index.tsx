@@ -26,7 +26,7 @@ const LoginScreen = () => {
 
     try {
       await login(email, password);
-      router.replace("/(core-app)/(home)");
+      router.replace("/(core-app)/(coffees)/(my-collection)");
     } catch {
       Alert.alert("Login Failed", error || "An error occurred");
     }

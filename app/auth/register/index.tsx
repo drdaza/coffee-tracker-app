@@ -25,8 +25,8 @@ const RegisterScreen = () => {
       return;
     }
     console.log("Register with:", username, email, password);
-    // For now, just navigate to home after registration
-    router.replace("/(core-app)/(home)");
+    // For now, just navigate to coffees after registration
+    router.replace("/(core-app)/(coffees)/(my-collection)");
   };
 
   const handleNavigateToLogin = () => {
