@@ -32,6 +32,12 @@ export default function CoffeesLayout() {
       }}
     >
       <MaterialTopTabs.Screen
+        name="(browse)/index"
+        options={{
+          title: t("browse.title"),
+        }}
+      />
+      <MaterialTopTabs.Screen
         name="(my-collection)/index"
         options={{
           title: t("coffees.myCollection"),

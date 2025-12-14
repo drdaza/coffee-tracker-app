@@ -56,15 +56,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Drawer.Screen
-        name="(home)/index"
-        options={{
-          title: t("home.title"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} />
-          ),
-        }}
-      />
     </Drawer>
   );
 }

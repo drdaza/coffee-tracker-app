@@ -36,6 +36,11 @@ export default {
     dontHaveAccount: "Don't have an account? Sign up",
     alreadyHaveAccount: "Already have an account? Log in",
   },
+  browse: {
+    title: "Browse",
+    noCoffeesYet: "No coffees available",
+    noCoffeesMessage: "No coffees have been added yet. Be the first to add one!",
+  },
   coffees: {
     myCollection: "My Collection",
     myCreations: "My Created Coffees",
