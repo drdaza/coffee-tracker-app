@@ -3,12 +3,14 @@ import { ScreenLayout } from "@/components/layout/ScreenLayout";
 import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { useCoffeeStore } from "@/stores/coffeeStore";
+import { useCoffeeList } from "@/hooks/coffee/useCoffeeList";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 
-export default function MyCreationsScreen() {
+export default function MyCollectionScreen() {
   const { t } = useTranslation();
-  const { myCreations, isLoading, fetchMyCreations } = useCoffeeStore();
+  const { myCollection, isLoading, fetchMyCollection } = useCoffeeStore();
+  const { handleCoffeePress, handleAddCoffee } = useCoffeeList();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -17,9 +19,9 @@ export default function MyCreationsScreen() {
 
   const loadCoffees = async () => {
     try {
-      await fetchMyCreations();
+      await fetchMyCollection();
     } catch (error) {
-      console.error("Failed to load creations:", error);
+      console.error("Failed to load collection:", error);
     }
   };
 
@@ -29,27 +31,17 @@ export default function MyCreationsScreen() {
     setRefreshing(false);
   };
 
-  const handleCoffeePress = (coffeeId: string) => {
-    // TODO: Navigate to coffee detail screen
-    console.log("Coffee pressed:", coffeeId);
-  };
-
-  const handleAddCoffee = () => {
-    // TODO: Navigate to create coffee screen
-    console.log("Add coffee pressed");
-  };
-
   return (
     <ScreenLayout
-      loading={isLoading && myCreations.length === 0}
-      isEmpty={!isLoading && myCreations.length === 0}
+      loading={isLoading && myCollection.length === 0}
+      isEmpty={!isLoading && myCollection.length === 0}
       emptyIcon="cafe-outline"
       emptyTitle={t("home.noCoffeesYet")}
       emptyMessage={t("home.noCoffeesMessage")}
       onRetry={loadCoffees}
     >
       <CoffeeList
-        coffees={myCreations}
+        coffees={myCollection}
         onCoffeePress={handleCoffeePress}
         onRefresh={onRefresh}
         isRefreshing={refreshing}

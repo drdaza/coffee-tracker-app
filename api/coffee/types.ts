@@ -1,4 +1,4 @@
-import { RoastLevel } from './enums';
+import { BrewingMethod, RoastLevel } from "./enums";
 
 // Coffee creator info
 export interface CoffeeCreator {
@@ -20,6 +20,7 @@ export interface Coffee {
   roaster: string;
   origin: string;
   roastLevel: RoastLevel;
+  brewingMethod: BrewingMethod;
   process: string | null;
   price: number; // in cents
   description?: string;
@@ -38,6 +39,7 @@ export interface CreateCoffeeDto {
   roaster: string;
   origin: string;
   roastLevel: RoastLevel;
+  brewingMethod: BrewingMethod;
   process?: string;
   price: number; // in cents
   notes?: string;
@@ -48,6 +50,7 @@ export interface UpdateCoffeeDto {
   roaster?: string;
   origin?: string;
   roastLevel?: RoastLevel;
+  brewingMethod?: BrewingMethod;
   process?: string;
   price?: number; // in cents
   notes?: string;

@@ -7,7 +7,7 @@ interface CoffeeStore {
   coffees: Coffee[];
   myCollection: Coffee[];
   myCreations: Coffee[];
-  selectedCoffee: Coffee | null;
+  coffeeDetail: Coffee | null;
   isLoading: boolean;
 
   // Actions - Coffee CRUD
@@ -24,7 +24,7 @@ interface CoffeeStore {
   fetchMyCreations: () => Promise<void>;
 
   // Utility
-  setSelectedCoffee: (coffee: Coffee | null) => void;
+  setCoffeeDetail: (coffee: Coffee | null) => void;
 }
 
 export const useCoffeeStore = create<CoffeeStore>((set, get) => {
@@ -46,7 +46,7 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
     coffees: [],
     myCollection: [],
     myCreations: [],
-    selectedCoffee: null,
+    coffeeDetail: null,
     isLoading: false,
 
     // Coffee CRUD Actions
@@ -59,7 +59,7 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
     fetchCoffee: (id: string) =>
       withLoading(async () => {
         const coffee = await coffeeService.getCoffee(id);
-        set({ selectedCoffee: coffee });
+        set({ coffeeDetail: coffee });
       }),
 
     createCoffee: (data: CreateCoffeeDto) =>
@@ -80,10 +80,10 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
           myCreations: state.myCreations.map((c) =>
             c.id === id ? updatedCoffee : c,
           ),
-          selectedCoffee:
-            state.selectedCoffee?.id === id
+          coffeeDetail:
+            state.coffeeDetail?.id === id
               ? updatedCoffee
-              : state.selectedCoffee,
+              : state.coffeeDetail,
         }));
         return updatedCoffee;
       }),
@@ -95,8 +95,8 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
           coffees: state.coffees.filter((c) => c.id !== id),
           myCreations: state.myCreations.filter((c) => c.id !== id),
           myCollection: state.myCollection.filter((c) => c.id !== id),
-          selectedCoffee:
-            state.selectedCoffee?.id === id ? null : state.selectedCoffee,
+          coffeeDetail:
+            state.coffeeDetail?.id === id ? null : state.coffeeDetail,
         }));
       }),
 
@@ -128,7 +128,7 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
       }),
 
     // Utility Actions
-    setSelectedCoffee: (coffee: Coffee | null) =>
-      set({ selectedCoffee: coffee }),
+    setCoffeeDetail: (coffee: Coffee | null) =>
+      set({ coffeeDetail: coffee }),
   };
 });

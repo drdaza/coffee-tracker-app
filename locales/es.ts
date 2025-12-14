@@ -45,6 +45,10 @@ export default {
     myCollection: "Mi Colección",
     myCreations: "Mis Cafés Creados",
   },
+  coffeeDetail: {
+    graphics: "Gráficos",
+    information: "Información",
+  },
   validation: {
     required: "Este campo es obligatorio",
     invalidEmail: "Por favor ingresa un email válido",

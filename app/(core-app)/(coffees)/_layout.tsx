@@ -1,54 +1,16 @@
-import { withLayoutContext } from "expo-router";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useThemeColor } from "@/hooks/theme/useThemeColor";
-import { useTranslation } from "@/hooks/i18n/useTranslation";
-
-const { Navigator } = createMaterialTopTabNavigator();
-
-export const MaterialTopTabs = withLayoutContext(Navigator);
+import { Stack } from "expo-router";
 
 export default function CoffeesLayout() {
-  const background = useThemeColor({}, "background");
-  const tint = useThemeColor({}, "tint");
-  const text = useThemeColor({}, "text");
-  const { t } = useTranslation();
-
   return (
-    <MaterialTopTabs
+    <Stack
       screenOptions={{
-        tabBarStyle: {
-          backgroundColor: background,
-        },
-        tabBarActiveTintColor: tint,
-        tabBarInactiveTintColor: text,
-        tabBarIndicatorStyle: {
-          backgroundColor: tint,
-        },
-        tabBarLabelStyle: {
-          fontSize: 14,
-          fontWeight: "600",
-          textTransform: "none",
-        },
+        headerShown: false,
       }}
     >
-      <MaterialTopTabs.Screen
-        name="(browse)/index"
-        options={{
-          title: t("browse.title"),
-        }}
-      />
-      <MaterialTopTabs.Screen
-        name="(my-collection)/index"
-        options={{
-          title: t("coffees.myCollection"),
-        }}
-      />
-      <MaterialTopTabs.Screen
-        name="(my-creations)/index"
-        options={{
-          title: t("coffees.myCreations"),
-        }}
-      />
-    </MaterialTopTabs>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="[id]" />
+      <Stack.Screen name="create" />
+      <Stack.Screen name="edit/[id]" />
+    </Stack>
   );
 }

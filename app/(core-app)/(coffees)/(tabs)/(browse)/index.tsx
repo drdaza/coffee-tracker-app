@@ -3,12 +3,14 @@ import { ScreenLayout } from "@/components/layout/ScreenLayout";
 import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { useCoffeeStore } from "@/stores/coffeeStore";
+import { useCoffeeList } from "@/hooks/coffee/useCoffeeList";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 
 export default function BrowseScreen() {
   const { t } = useTranslation();
   const { coffees, isLoading, fetchCoffees } = useCoffeeStore();
+  const { handleCoffeePress, handleAddCoffee } = useCoffeeList();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -27,16 +29,6 @@ export default function BrowseScreen() {
     setRefreshing(true);
     await loadCoffees();
     setRefreshing(false);
-  };
-
-  const handleCoffeePress = (coffeeId: string) => {
-    // TODO: Navigate to coffee detail screen
-    console.log("Coffee pressed:", coffeeId);
-  };
-
-  const handleAddCoffee = () => {
-    // TODO: Navigate to create coffee screen
-    console.log("Add coffee pressed");
   };
 
   return (

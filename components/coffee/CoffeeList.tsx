@@ -6,7 +6,7 @@ import { FlatList, StyleSheet, RefreshControl } from "react-native";
 
 interface CoffeeListProps {
   coffees: Coffee[];
-  onCoffeePress: (coffeeId: string) => void;
+  onCoffeePress: (coffee: Coffee) => void;
   onRefresh?: () => void;
   isRefreshing?: boolean;
 }
@@ -29,7 +29,7 @@ export const CoffeeList = ({
       renderItem={({ item }) => (
         <CoffeeCard
           coffee={item}
-          onPress={() => onCoffeePress(item.id)}
+          onPress={() => onCoffeePress(item)}
           backgroundColor={cardBackground}
           textColor={text}
           iconColor={icon}
