@@ -36,8 +36,8 @@ export default function MyCreationsScreen() {
       loading={isLoading && myCreations.length === 0}
       isEmpty={!isLoading && myCreations.length === 0}
       emptyIcon="cafe-outline"
-      emptyTitle={t("home.noCoffeesYet")}
-      emptyMessage={t("home.noCoffeesMessage")}
+      emptyTitle={t("creations.empty")}
+      emptyMessage={t("creations.emptyMessage")}
       onRetry={loadCoffees}
     >
       <CoffeeList

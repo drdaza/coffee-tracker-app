@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/common/EmptyState";
 import { Ionicons } from "@expo/vector-icons";
 
 interface ScreenLayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
   loading?: boolean;
   error?: string | null;
   isEmpty?: boolean;
@@ -65,7 +65,7 @@ export const ScreenLayout = ({
   }
 
   // Content
-  return <Container>{children}</Container>;
+  return <Container>{children ?? null}</Container>;
 };
 
 const styles = StyleSheet.create({

@@ -13,6 +13,9 @@ export const Colors = {
     cardBackground: "#f9f2e6", // card background (slightly lighter)
     tabIconDefault: "#a39789",
     tabIconSelected: tintColorLight,
+    error: "#c0392b", // dark red for errors
+    errorBackground: "#fdeaea", // light red background
+    border: "rgba(128, 128, 128, 0.3)", // subtle border color
   },
   dark: {
     text: "#f9f2e6", // light cream
@@ -23,5 +26,8 @@ export const Colors = {
     cardBackground: "#1a1410", // card background (slightly lighter than bg)
     tabIconDefault: "#8c7c6e",
     tabIconSelected: tintColorDark,
+    error: "#e74c3c", // brighter red for dark mode
+    errorBackground: "#3d1f1f", // dark red background
+    border: "rgba(128, 128, 128, 0.3)", // subtle border color
   },
 };

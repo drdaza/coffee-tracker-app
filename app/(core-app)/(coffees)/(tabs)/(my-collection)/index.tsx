@@ -36,8 +36,8 @@ export default function MyCollectionScreen() {
       loading={isLoading && myCollection.length === 0}
       isEmpty={!isLoading && myCollection.length === 0}
       emptyIcon="cafe-outline"
-      emptyTitle={t("home.noCoffeesYet")}
-      emptyMessage={t("home.noCoffeesMessage")}
+      emptyTitle={t("collection.empty")}
+      emptyMessage={t("collection.emptyMessage")}
       onRetry={loadCoffees}
     >
       <CoffeeList

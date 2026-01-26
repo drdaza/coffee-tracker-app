@@ -65,6 +65,7 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
     createCoffee: (data: CreateCoffeeDto) =>
       withLoading(async () => {
         const newCoffee = await coffeeService.createCoffee(data);
+        console.log(newCoffee);
         set((state) => ({
           coffees: [newCoffee, ...state.coffees],
           myCreations: [newCoffee, ...state.myCreations],
@@ -81,9 +82,7 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
             c.id === id ? updatedCoffee : c,
           ),
           coffeeDetail:
-            state.coffeeDetail?.id === id
-              ? updatedCoffee
-              : state.coffeeDetail,
+            state.coffeeDetail?.id === id ? updatedCoffee : state.coffeeDetail,
         }));
         return updatedCoffee;
       }),
@@ -128,7 +127,6 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
       }),
 
     // Utility Actions
-    setCoffeeDetail: (coffee: Coffee | null) =>
-      set({ coffeeDetail: coffee }),
+    setCoffeeDetail: (coffee: Coffee | null) => set({ coffeeDetail: coffee }),
   };
 });

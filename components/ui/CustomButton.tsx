@@ -1,5 +1,5 @@
 import { useThemeColor } from '@/hooks/theme/useThemeColor';
-import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, PressableProps, StyleSheet, Text, ViewStyle, StyleProp } from 'react-native';
 
 export type CustomButtonType = 'base' | 'delete' | 'action';
 export type CustomButtonSize = 'small' | 'medium' | 'large' | 'full';
@@ -7,7 +7,7 @@ export type CustomButtonSize = 'small' | 'medium' | 'large' | 'full';
 interface CustomButtonProps extends Omit<PressableProps, 'style'> {
   type?: CustomButtonType;
   label: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   size?: CustomButtonSize;
 }
 

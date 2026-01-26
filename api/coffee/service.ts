@@ -1,4 +1,4 @@
-import { apiClient } from '../client';
+import { apiClient } from "../client";
 import type {
   Coffee,
   CreateCoffeeDto,
@@ -6,14 +6,14 @@ import type {
   CoffeesResponse,
   CoffeeResponse,
   CollectionResponse,
-} from './types';
+} from "./types";
 
 export const coffeeService = {
   /**
    * Get all coffees
    */
   async getCoffees(): Promise<Coffee[]> {
-    const response = await apiClient.get<CoffeesResponse>('/coffees');
+    const response = await apiClient.get<CoffeesResponse>("/coffees");
     return response.data.data;
   },
 
@@ -29,7 +29,7 @@ export const coffeeService = {
    * Create a new coffee
    */
   async createCoffee(data: CreateCoffeeDto): Promise<Coffee> {
-    const response = await apiClient.post<CoffeeResponse>('/coffees', data);
+    const response = await apiClient.post<CoffeeResponse>("/coffees", data);
     return response.data.data;
   },
 
@@ -69,7 +69,9 @@ export const coffeeService = {
    * Get user's coffee collection
    */
   async getMyCollection(): Promise<Coffee[]> {
-    const response = await apiClient.get<CollectionResponse>('/coffees/my-collection');
+    const response = await apiClient.get<CollectionResponse>(
+      "/coffees/my-collection",
+    );
     return response.data.data;
   },
 
@@ -77,7 +79,9 @@ export const coffeeService = {
    * Get coffees created by the current user
    */
   async getMyCreations(): Promise<Coffee[]> {
-    const response = await apiClient.get<CoffeesResponse>('/coffees/my-creations');
+    const response = await apiClient.get<CoffeesResponse>(
+      "/coffees/my-creations",
+    );
     return response.data.data;
   },
 };
