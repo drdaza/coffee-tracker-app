@@ -4,6 +4,7 @@ import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { useCoffeeStore } from "@/stores/coffeeStore";
+import { useCoffeeList } from "@/hooks/coffee/useCoffeeList";
 import React, { useEffect, useState } from "react";
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
 
@@ -15,6 +16,7 @@ const HomeScreen = () => {
   const { t } = useTranslation();
 
   const { myCollection, isLoading, fetchMyCollection } = useCoffeeStore();
+  const { handleCoffeePress, handleAddCoffee } = useCoffeeList();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -25,7 +27,6 @@ const HomeScreen = () => {
     try {
       await fetchMyCollection();
     } catch (error) {
-      // Error handling can be done in UI layer
       console.error("Failed to load coffees:", error);
     }
   };
@@ -34,16 +35,6 @@ const HomeScreen = () => {
     setRefreshing(true);
     await loadCoffees();
     setRefreshing(false);
-  };
-
-  const handleCoffeePress = (coffeeId: string) => {
-    // TODO: Navigate to coffee detail screen
-    console.log("Coffee pressed:", coffeeId);
-  };
-
-  const handleAddCoffee = () => {
-    // TODO: Navigate to create coffee screen
-    console.log("Add coffee pressed");
   };
 
   return (
@@ -62,7 +53,7 @@ const HomeScreen = () => {
         renderItem={({ item }) => (
           <CoffeeCard
             coffee={item}
-            onPress={() => handleCoffeePress(item.id)}
+            onPress={() => handleCoffeePress(item)}
             backgroundColor={cardBackground}
             textColor={text}
             iconColor={icon}

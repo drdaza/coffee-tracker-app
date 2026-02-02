@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   ScrollView,
@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { router, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -20,116 +19,85 @@ import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { useCoffeeEnumLabels } from "@/hooks/coffee/useCoffeeEnumLabels";
 import { useCoffeeFormValidation } from "@/hooks/form/useCoffeeFormValidation";
-import { useCoffeeStore } from "@/stores/coffeeStore";
 import { RoastLevel, BrewingMethod } from "@/api/coffee/enums";
-import { CreateCoffeeDto } from "@/api/coffee/types";
-import { AppError } from "@/api/errors";
-import { dollarsToCents, sanitizePriceInput } from "@/utils/price";
+import { sanitizePriceInput } from "@/utils/price";
 
-export default function CreateCoffeeScreen() {
-  const backgroundColor = useThemeColor({}, "background");
-  const textColor = useThemeColor({}, "text");
+export interface CoffeeFormData {
+  name: string;
+  roaster: string;
+  origin: string;
+  roastLevel: RoastLevel | null;
+  brewingMethod: BrewingMethod | null;
+  process: string;
+  price: string;
+  rating: number;
+  description: string;
+}
+
+export interface CoffeeFormProps {
+  initialValues: CoffeeFormData;
+  onSubmit: (data: CoffeeFormData) => Promise<void>;
+  submitLabel: string;
+  loadingLabel: string;
+  isLoading: boolean;
+  generalError?: string | null;
+  onClearError?: () => void;
+}
+
+export const CoffeeForm = ({
+  initialValues,
+  onSubmit,
+  submitLabel,
+  loadingLabel,
+  isLoading,
+  generalError,
+  onClearError,
+}: CoffeeFormProps) => {
   const iconColor = useThemeColor({}, "icon");
   const errorColor = useThemeColor({}, "error");
   const errorBackground = useThemeColor({}, "errorBackground");
 
   const { t } = useTranslation();
   const { roastLevelLabels, brewingMethodLabels } = useCoffeeEnumLabels();
-  const { errors, validate, clearFieldError, setGeneralError, isFormValid } =
+  const { errors, validate, clearFieldError, isFormValid } =
     useCoffeeFormValidation();
-  const { createCoffee, isLoading } = useCoffeeStore();
 
-  // Form state
-  const [name, setName] = useState("");
-  const [roaster, setRoaster] = useState("");
-  const [origin, setOrigin] = useState("");
-  const [roastLevel, setRoastLevel] = useState<RoastLevel | null>(null);
-  const [brewingMethod, setBrewingMethod] = useState<BrewingMethod | null>(
-    null,
-  );
-  const [process, setProcess] = useState("");
-  const [price, setPrice] = useState("");
-  const [rating, setRating] = useState(0);
-  const [description, setDescription] = useState("");
-
-  // Picker modal states
+  const [formData, setFormData] = useState<CoffeeFormData>(initialValues);
   const [showRoastLevelPicker, setShowRoastLevelPicker] = useState(false);
   const [showBrewingMethodPicker, setShowBrewingMethodPicker] = useState(false);
 
+  const updateField = useCallback(
+    <K extends keyof CoffeeFormData>(field: K, value: CoffeeFormData[K]) => {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      if (field === "name" || field === "price") {
+        clearFieldError(field);
+      }
+    },
+    [clearFieldError]
+  );
+
+  const handlePriceChange = useCallback(
+    (text: string) => {
+      const sanitized = sanitizePriceInput(text);
+      if (sanitized !== null) {
+        updateField("price", sanitized);
+      }
+    },
+    [updateField]
+  );
+
   const handleSubmit = async () => {
-    const { isValid } = validate({ name, price });
-    if (!isValid) {
-      return;
-    }
+    const { isValid } = validate({ name: formData.name, price: formData.price });
+    if (!isValid) return;
 
-    try {
-      setGeneralError(null);
-
-      // Convert price from dollars to cents
-      const priceInCents = dollarsToCents(price) ?? 0;
-
-      const coffeeData: CreateCoffeeDto = {
-        name: name.trim(),
-        roaster: roaster.trim() || "Unknown",
-        origin: origin.trim() || "Unknown",
-        roastLevel: roastLevel || RoastLevel.MEDIUM,
-        brewingMethod: brewingMethod || BrewingMethod.DRIP,
-        price: priceInCents,
-      };
-
-      // Add optional fields if provided
-      if (process.trim()) {
-        coffeeData.process = process.trim();
-      }
-      if (description.trim()) {
-        coffeeData.description = description.trim();
-      }
-      if (rating > 0) {
-        coffeeData.rate = rating;
-      }
-
-      await createCoffee(coffeeData);
-
-      // Navigate back on success
-      router.back();
-    } catch (err) {
-      if (err instanceof AppError) {
-        setGeneralError(err.getUserMessage());
-      } else {
-        setGeneralError(t("common.unexpectedError"));
-      }
-    }
-  };
-
-  const handlePriceChange = (text: string) => {
-    const sanitized = sanitizePriceInput(text);
-    if (sanitized !== null) {
-      setPrice(sanitized);
-      clearFieldError("price");
-    }
+    onClearError?.();
+    await onSubmit(formData);
   };
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          title: t("coffees.addCoffee"),
-          headerStyle: { backgroundColor },
-          headerTintColor: textColor,
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={styles.headerButton}
-            >
-              <Ionicons name="arrow-back" size={24} color={textColor} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-
       <KeyboardAvoidingView
-        style={[styles.container, { backgroundColor }]}
+        style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
       >
@@ -140,32 +108,26 @@ export default function CreateCoffeeScreen() {
           keyboardShouldPersistTaps="handled"
         >
           {/* Error Message */}
-          {errors.general && (
+          {(generalError || errors.general) && (
             <View
-              style={[
-                styles.errorContainer,
-                { backgroundColor: errorBackground },
-              ]}
+              style={[styles.errorContainer, { backgroundColor: errorBackground }]}
             >
               <Ionicons name="alert-circle" size={20} color={errorColor} />
               <ThemedText style={[styles.errorText, { color: errorColor }]}>
-                {errors.general}
+                {generalError || errors.general}
               </ThemedText>
             </View>
           )}
 
-          {/* Name Field (Required) */}
+          {/* Name Field */}
           <View style={styles.fieldContainer}>
             <CustomInput
               size="full"
               label={`${t("coffees.name")} *`}
               showLabel
               placeholder={t("coffees.enterCoffeeName")}
-              value={name}
-              onChangeText={(text) => {
-                setName(text);
-                clearFieldError("name");
-              }}
+              value={formData.name}
+              onChangeText={(text) => updateField("name", text)}
               autoCapitalize="words"
             />
             {errors.name && (
@@ -182,8 +144,8 @@ export default function CreateCoffeeScreen() {
               label={t("coffees.roaster")}
               showLabel
               placeholder={t("coffees.enterRoasterName")}
-              value={roaster}
-              onChangeText={setRoaster}
+              value={formData.roaster}
+              onChangeText={(text) => updateField("roaster", text)}
               autoCapitalize="words"
             />
           </View>
@@ -195,8 +157,8 @@ export default function CreateCoffeeScreen() {
               label={t("coffees.origin")}
               showLabel
               placeholder={t("coffees.originPlaceholder")}
-              value={origin}
-              onChangeText={setOrigin}
+              value={formData.origin}
+              onChangeText={(text) => updateField("origin", text)}
               autoCapitalize="words"
             />
           </View>
@@ -204,7 +166,7 @@ export default function CreateCoffeeScreen() {
           {/* Roast Level Picker */}
           <PickerField
             label={t("coffees.roastLevel")}
-            value={roastLevel ? roastLevelLabels[roastLevel] : null}
+            value={formData.roastLevel ? roastLevelLabels[formData.roastLevel] : null}
             placeholder={t("coffees.selectRoastLevel")}
             onPress={() => setShowRoastLevelPicker(true)}
           />
@@ -212,7 +174,7 @@ export default function CreateCoffeeScreen() {
           {/* Brewing Method Picker */}
           <PickerField
             label={t("coffees.brewingMethod")}
-            value={brewingMethod ? brewingMethodLabels[brewingMethod] : null}
+            value={formData.brewingMethod ? brewingMethodLabels[formData.brewingMethod] : null}
             placeholder={t("coffees.selectBrewingMethod")}
             onPress={() => setShowBrewingMethodPicker(true)}
           />
@@ -224,8 +186,8 @@ export default function CreateCoffeeScreen() {
               label={t("coffees.process")}
               showLabel
               placeholder={t("coffees.processPlaceholder")}
-              value={process}
-              onChangeText={setProcess}
+              value={formData.process}
+              onChangeText={(text) => updateField("process", text)}
               autoCapitalize="words"
             />
           </View>
@@ -240,7 +202,7 @@ export default function CreateCoffeeScreen() {
               <CustomInput
                 size="full"
                 placeholder="0.00"
-                value={price}
+                value={formData.price}
                 onChangeText={handlePriceChange}
                 keyboardType="decimal-pad"
                 style={styles.priceInput}
@@ -261,17 +223,17 @@ export default function CreateCoffeeScreen() {
             </ThemedText>
             <View style={styles.ratingContainer}>
               <StarRating
-                rating={rating}
-                onRatingChange={setRating}
+                rating={formData.rating}
+                onRatingChange={(value) => updateField("rating", value)}
                 size={36}
               />
               <ThemedText style={styles.ratingText}>
-                {rating > 0 ? `${rating}/5` : t("coffees.tapToRate")}
+                {formData.rating > 0 ? `${formData.rating}/5` : t("coffees.tapToRate")}
               </ThemedText>
             </View>
-            {rating > 0 && (
+            {formData.rating > 0 && (
               <TouchableOpacity
-                onPress={() => setRating(0)}
+                onPress={() => updateField("rating", 0)}
                 style={styles.clearRating}
               >
                 <ThemedText style={{ color: iconColor, fontSize: 14 }}>
@@ -288,8 +250,8 @@ export default function CreateCoffeeScreen() {
               label={t("coffees.description")}
               showLabel
               placeholder={t("coffees.descriptionPlaceholder")}
-              value={description}
-              onChangeText={setDescription}
+              value={formData.description}
+              onChangeText={(text) => updateField("description", text)}
               multiline
               numberOfLines={4}
               style={styles.notesInput}
@@ -302,14 +264,12 @@ export default function CreateCoffeeScreen() {
             <CustomButton
               type="action"
               size="full"
-              label={
-                isLoading ? t("coffees.creating") : t("coffees.createCoffee")
-              }
+              label={isLoading ? loadingLabel : submitLabel}
               onPress={handleSubmit}
-              disabled={isLoading || !isFormValid(name)}
+              disabled={isLoading || !isFormValid(formData.name)}
               style={[
                 styles.submitButton,
-                isLoading || !isFormValid(name)
+                isLoading || !isFormValid(formData.name)
                   ? styles.submitButtonDisabled
                   : undefined,
               ]}
@@ -322,10 +282,10 @@ export default function CreateCoffeeScreen() {
       <EnumPickerModal
         visible={showRoastLevelPicker}
         onClose={() => setShowRoastLevelPicker(false)}
-        onSelect={setRoastLevel}
+        onSelect={(value) => updateField("roastLevel", value)}
         options={Object.values(RoastLevel)}
         labels={roastLevelLabels}
-        selectedValue={roastLevel}
+        selectedValue={formData.roastLevel}
         title={t("coffees.selectRoastLevel")}
         noneLabel={t("coffees.none")}
       />
@@ -334,16 +294,16 @@ export default function CreateCoffeeScreen() {
       <EnumPickerModal
         visible={showBrewingMethodPicker}
         onClose={() => setShowBrewingMethodPicker(false)}
-        onSelect={setBrewingMethod}
+        onSelect={(value) => updateField("brewingMethod", value)}
         options={Object.values(BrewingMethod)}
         labels={brewingMethodLabels}
-        selectedValue={brewingMethod}
+        selectedValue={formData.brewingMethod}
         title={t("coffees.selectBrewingMethod")}
         noneLabel={t("coffees.none")}
       />
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -355,10 +315,6 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 20,
     paddingBottom: 40,
-  },
-  headerButton: {
-    padding: 8,
-    marginLeft: -8,
   },
   errorContainer: {
     flexDirection: "row",

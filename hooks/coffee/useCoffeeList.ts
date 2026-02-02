@@ -11,7 +11,7 @@ export const useCoffeeList = () => {
   };
 
   const handleAddCoffee = () => {
-    router.push("/(core-app)/(coffees)/create");
+    router.push("/(core-app)/(coffees)/(create)");
   };
 
   return {
