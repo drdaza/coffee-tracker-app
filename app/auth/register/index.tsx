@@ -1,11 +1,12 @@
 import LogoCoffeeChartCenter from "@/assets/svgs/logo_coffee_chart_centered_v2.svg";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomInput } from "@/components/ui/CustomInput";
+import { ThemedText } from "@/components/ui/ThemedText";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 
 const RegisterScreen = () => {
   const background = useThemeColor({}, "background");
@@ -102,7 +103,7 @@ const RegisterScreen = () => {
         />
 
         <Pressable onPress={handleNavigateToLogin}>
-          <Text
+          <ThemedText
             style={{
               color: tint,
               textAlign: "center",
@@ -110,7 +111,7 @@ const RegisterScreen = () => {
             }}
           >
             {t("auth.alreadyHaveAccount")}
-          </Text>
+          </ThemedText>
         </Pressable>
       </View>
     </ScrollView>

@@ -4,7 +4,6 @@ import type {
   CreateCoffeeDto,
   UpdateCoffeeDto,
   CoffeesResponse,
-  CoffeeResponse,
   CollectionResponse,
 } from "./types";
 
@@ -21,27 +20,24 @@ export const coffeeService = {
    * Get a single coffee by ID
    */
   async getCoffee(id: string): Promise<Coffee> {
-    const response = await apiClient.get<CoffeeResponse>(`/coffees/${id}`);
-    return response.data.data;
+    const response = await apiClient.get<Coffee>(`/coffees/${id}`);
+    return response.data;
   },
 
   /**
    * Create a new coffee
    */
   async createCoffee(data: CreateCoffeeDto): Promise<Coffee> {
-    const response = await apiClient.post<CoffeeResponse>("/coffees", data);
-    return response.data.data;
+    const response = await apiClient.post<Coffee>("/coffees", data);
+    return response.data;
   },
 
   /**
    * Update an existing coffee
    */
   async updateCoffee(id: string, data: UpdateCoffeeDto): Promise<Coffee> {
-    const response = await apiClient.patch<CoffeeResponse>(
-      `/coffees/${id}`,
-      data,
-    );
-    return response.data.data;
+    const response = await apiClient.patch<Coffee>(`/coffees/${id}`, data);
+    return response.data;
   },
 
   /**

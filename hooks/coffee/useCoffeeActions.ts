@@ -80,7 +80,7 @@ export function useCoffeeActions({
             }
           },
         },
-      ]
+      ],
     );
   }, [coffeeId, deleteCoffee, t]);
 

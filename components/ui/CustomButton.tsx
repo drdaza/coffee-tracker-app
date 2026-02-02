@@ -1,5 +1,6 @@
 import { useThemeColor } from '@/hooks/theme/useThemeColor';
-import { Pressable, PressableProps, StyleSheet, Text, ViewStyle, StyleProp } from 'react-native';
+import { Pressable, PressableProps, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { ThemedText } from './ThemedText';
 
 export type CustomButtonType = 'base' | 'delete' | 'action';
 export type CustomButtonSize = 'small' | 'medium' | 'large' | 'full';
@@ -73,14 +74,14 @@ export function CustomButton({ type = 'base', label, style, size = 'medium', onP
       onPress={onPress}
       {...props}
     >
-      <Text
+      <ThemedText
         style={[
           styles.text,
           { color: textColorMap[type] },
         ]}
       >
         {label}
-      </Text>
+      </ThemedText>
     </Pressable>
   );
 }

@@ -1,12 +1,13 @@
 import LogoCoffeeChartCenter from "@/assets/svgs/logo_coffee_chart_centered_v2.svg";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomInput } from "@/components/ui/CustomInput";
+import { ThemedText } from "@/components/ui/ThemedText";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { useTranslation } from "@/hooks/i18n/useTranslation";
 import { useAuthStore } from "@/stores/authStore";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, Text, View, Alert, ActivityIndicator } from "react-native";
+import { Pressable, View, Alert, ActivityIndicator } from "react-native";
 
 const LoginScreen = () => {
   const background = useThemeColor({}, "background");
@@ -89,9 +90,9 @@ const LoginScreen = () => {
         />
 
         {error && (
-          <Text style={{ color: "red", fontSize: 14, marginTop: 5 }}>
+          <ThemedText style={{ color: "red", fontSize: 14, marginTop: 5 }}>
             {error}
-          </Text>
+          </ThemedText>
         )}
 
         <CustomButton
@@ -110,7 +111,7 @@ const LoginScreen = () => {
         )}
 
         <Pressable onPress={handleNavigateToRegister}>
-          <Text
+          <ThemedText
             style={{
               color: tint,
               textAlign: "center",
@@ -118,7 +119,7 @@ const LoginScreen = () => {
             }}
           >
             {t("auth.dontHaveAccount")}
-          </Text>
+          </ThemedText>
         </Pressable>
       </View>
     </View>

@@ -77,10 +77,6 @@ export interface CoffeesResponse {
   meta: PaginationMeta;
 }
 
-export interface CoffeeResponse {
-  data: Coffee;
-}
-
 // Collection DTOs
 export interface AddToCollectionDto {
   coffeeId: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { useCoffeeStore } from "@/stores/coffeeStore";
@@ -18,7 +18,7 @@ import { formatPrice } from "@/utils/price";
 import { brewingMethodIcons } from "@/constants/coffeeIcons";
 
 export default function CoffeeInformationScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id } = useGlobalSearchParams<{ id: string }>();
   const { t } = useTranslation();
   const { formatDate } = useFormatDate();
 

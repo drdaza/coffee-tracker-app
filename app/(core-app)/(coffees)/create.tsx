@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomInput } from "@/components/ui/CustomInput";
 import { ThemedText } from "@/components/ui/ThemedText";
-import { InteractiveStarRating } from "@/components/common/InteractiveStarRating";
+import { StarRating } from "@/components/common/StarRating";
 import { EnumPickerModal } from "@/components/common/EnumPickerModal";
 import { PickerField } from "@/components/common/PickerField";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
@@ -91,7 +91,7 @@ export default function CreateCoffeeScreen() {
       await createCoffee(coffeeData);
 
       // Navigate back on success
-      // router.back();
+      router.back();
     } catch (err) {
       if (err instanceof AppError) {
         setGeneralError(err.getUserMessage());
@@ -260,7 +260,7 @@ export default function CreateCoffeeScreen() {
               {t("coffees.rating")}
             </ThemedText>
             <View style={styles.ratingContainer}>
-              <InteractiveStarRating
+              <StarRating
                 rating={rating}
                 onRatingChange={setRating}
                 size={36}

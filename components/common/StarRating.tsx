@@ -1,46 +1,74 @@
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import { View, TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useThemeColor } from "@/hooks/theme/useThemeColor";
 
 interface StarRatingProps {
-  rating: number; // 0 to 5, supports decimals
+  rating: number;
+  onRatingChange?: (rating: number) => void;
   maxStars?: number;
   size?: number;
   color?: string;
+  emptyColor?: string;
   containerStyle?: ViewStyle;
 }
 
 export const StarRating = ({
   rating,
+  onRatingChange,
   maxStars = 5,
   size = 18,
-  color = "#D4A574",
+  color,
+  emptyColor,
   containerStyle,
 }: StarRatingProps) => {
+  const tintColor = useThemeColor({}, "tint");
+  const iconColor = useThemeColor({}, "icon");
+
+  const starColor = color || tintColor;
+  const starEmptyColor = emptyColor || iconColor;
   const clampedRating = Math.max(0, Math.min(maxStars, rating));
+  const isInteractive = !!onRatingChange;
 
   const renderStar = (position: number) => {
-    const diff = clampedRating - position;
+    let iconName: "star" | "star-half" | "star-outline";
+    let iconColorToUse: string;
 
-    if (diff >= 1) {
-      // Full star
-      return <Ionicons key={position} name="star" size={size} color={color} />;
-    } else if (diff > 0 && diff < 1) {
-      // Half star
-      return (
-        <Ionicons key={position} name="star-half" size={size} color={color} />
-      );
+    if (clampedRating >= position) {
+      iconName = "star";
+      iconColorToUse = starColor;
+    } else if (!isInteractive && clampedRating >= position - 0.5) {
+      // Half stars only in display mode
+      iconName = "star-half";
+      iconColorToUse = starColor;
     } else {
-      // Empty star
+      iconName = "star-outline";
+      iconColorToUse = starEmptyColor;
+    }
+
+    const star = (
+      <Ionicons
+        key={position}
+        name={iconName}
+        size={size}
+        color={iconColorToUse}
+      />
+    );
+
+    if (isInteractive) {
       return (
-        <Ionicons
+        <TouchableOpacity
           key={position}
-          name="star-outline"
-          size={size}
-          color={color}
-        />
+          onPress={() => onRatingChange(position)}
+          activeOpacity={0.7}
+          hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
+        >
+          {star}
+        </TouchableOpacity>
       );
     }
+
+    return star;
   };
 
   return (
@@ -53,6 +81,6 @@ export const StarRating = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: 2,
+    gap: 4,
   },
 });

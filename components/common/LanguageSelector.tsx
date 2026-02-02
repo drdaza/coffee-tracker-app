@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useThemeColor } from '@/hooks/theme/useThemeColor';
 import { useTranslation } from '@/hooks/i18n/useTranslation';
+import { ThemedText } from '@/components/ui/ThemedText';
 
 interface LanguageSelectorProps {
   style?: any;
@@ -35,7 +36,7 @@ export function LanguageSelector({ style }: LanguageSelectorProps) {
           ]}
           onPress={() => switchLocale(lang)}
         >
-          <Text
+          <ThemedText
             style={[
               styles.languageText,
               {
@@ -45,7 +46,7 @@ export function LanguageSelector({ style }: LanguageSelectorProps) {
             ]}
           >
             {getLanguageName(lang)}
-          </Text>
+          </ThemedText>
         </TouchableOpacity>
       ))}
     </View>

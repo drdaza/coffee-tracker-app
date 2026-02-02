@@ -1,9 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import type { Coffee } from "@/api/coffee";
 import { useFormatDate } from "@/hooks/utils/useFormatDate";
 import { StarRating } from "@/components/common/StarRating";
+import { ThemedText } from "@/components/ui/ThemedText";
 
 export interface CoffeeCardProps {
   coffee: Coffee;
@@ -47,18 +48,18 @@ export const CoffeeCard = ({
 
             {/* Middle: Coffee info */}
             <View style={styles.infoContainer}>
-              <Text
+              <ThemedText
                 style={[styles.coffeeName, { color: textColor }]}
                 numberOfLines={1}
               >
                 {coffee.name}
-              </Text>
-              <Text
+              </ThemedText>
+              <ThemedText
                 style={[styles.roasterName, { color: iconColor }]}
                 numberOfLines={1}
               >
                 {coffee.roaster}
-              </Text>
+              </ThemedText>
               {coffee.rate !== undefined && coffee.rate > 0 && (
                 <StarRating
                   rating={coffee.rate}
@@ -67,9 +68,9 @@ export const CoffeeCard = ({
               )}
               <View style={styles.dateContainer}>
                 <Ionicons name="calendar" size={14} color={iconColor} />
-                <Text style={[styles.date, { color: iconColor }]}>
+                <ThemedText style={[styles.date, { color: iconColor }]}>
                   {formatDate(coffee.createdAt)}
-                </Text>
+                </ThemedText>
               </View>
             </View>
 

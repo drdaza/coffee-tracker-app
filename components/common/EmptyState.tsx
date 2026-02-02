@@ -1,7 +1,8 @@
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet, ViewStyle } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
+import { ThemedText } from "@/components/ui/ThemedText";
 
 interface EmptyStateProps {
   icon?: keyof typeof Ionicons.glyphMap;
@@ -22,8 +23,8 @@ export const EmptyState = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <Ionicons name={icon} size={64} color={iconColor} />
-      <Text style={[styles.title, { color: text }]}>{title}</Text>
-      <Text style={[styles.message, { color: iconColor }]}>{message}</Text>
+      <ThemedText style={[styles.title, { color: text }]}>{title}</ThemedText>
+      <ThemedText style={[styles.message, { color: iconColor }]}>{message}</ThemedText>
     </View>
   );
 };

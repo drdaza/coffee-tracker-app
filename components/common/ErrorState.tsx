@@ -1,8 +1,9 @@
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet, ViewStyle } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 import { CustomButton } from "@/components/ui/CustomButton";
+import { ThemedText } from "@/components/ui/ThemedText";
 
 interface ErrorStateProps {
   message?: string;
@@ -23,8 +24,8 @@ export const ErrorState = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <Ionicons name="alert-circle-outline" size={64} color={icon} />
-      <Text style={[styles.title, { color: text }]}>{title}</Text>
-      <Text style={[styles.message, { color: icon }]}>{message}</Text>
+      <ThemedText style={[styles.title, { color: text }]}>{title}</ThemedText>
+      <ThemedText style={[styles.message, { color: icon }]}>{message}</ThemedText>
       {onRetry && (
         <CustomButton
           label="Retry"
