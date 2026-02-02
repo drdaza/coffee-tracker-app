@@ -7,6 +7,7 @@ import type {
 import { Platform } from "react-native";
 import { tokenStorage } from "./token-storage";
 import { AppError, type ApiErrorResponse } from "./errors";
+import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
 
 const getApiUrl = (): string => {
   if (!__DEV__) {
@@ -62,15 +63,6 @@ function createApiClient(): AxiosInstance {
         config.headers.Authorization = `Bearer ${token}`;
       }
 
-      // if (__DEV__) {
-      //   console.log(
-      //     `[API Request] ${config.method?.toUpperCase()} ${config.url}`,
-      //     {
-      //       data: config.data,
-      //     },
-      //   );
-      // }
-
       return config;
     },
     (error) => {
@@ -80,31 +72,12 @@ function createApiClient(): AxiosInstance {
 
   client.interceptors.response.use(
     (response) => {
-      // if (__DEV__) {
-      //   console.log(
-      //     `[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
-      //     {
-      //       status: response.status,
-      //       data: response.data,
-      //     },
-      //   );
-      // }
-
       return response;
     },
     async (error: AxiosError) => {
       const originalRequest = error.config as InternalAxiosRequestConfig & {
         _retry?: boolean;
       };
-
-      // if (__DEV__) {
-      //   console.error('[API Error]', {
-      //     url: error.config?.url,
-      //     status: error.response?.status,
-      //     message: error.message,
-      //     data: error.response?.data,
-      //   });
-      // }
 
       // Handle 401 - Token expired
       if (error.response?.status === 401 && !originalRequest._retry) {
@@ -152,8 +125,8 @@ function createApiClient(): AxiosInstance {
           processQueue(refreshError as Error, null);
           isRefreshing = false;
 
-          // Clear tokens and redirect to login
           await tokenStorage.clearTokens();
+          authEvents.emit(AUTH_EVENTS.REVOKED);
 
           throw new AppError("Session expired", 401);
         }

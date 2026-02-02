@@ -65,7 +65,6 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
     createCoffee: (data: CreateCoffeeDto) =>
       withLoading(async () => {
         const newCoffee = await coffeeService.createCoffee(data);
-        console.log(newCoffee);
         set((state) => ({
           coffees: [newCoffee, ...state.coffees],
           myCreations: [newCoffee, ...state.myCreations],

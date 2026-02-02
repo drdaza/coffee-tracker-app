@@ -1,7 +1,9 @@
 import { AuthStatus } from '@/constants/authStatus';
 import { create } from 'zustand';
 import { loginUser, logoutUser, checkAuthStatus } from '@/api/auth';
+import { tokenStorage } from '@/api/token-storage';
 import { AppError } from '@/api/errors';
+import { authEvents, AUTH_EVENTS } from '@/utils/authEvents';
 import type { User } from '@/api/types';
 
 interface AuthStore {
@@ -10,18 +12,26 @@ interface AuthStore {
   error: string | null;
   isLoading: boolean;
   setAuthStatus: (authStatus: AuthStatus) => void;
+  initializeAuth: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   checkStatus: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  authStatus: AuthStatus.LOGGED_OUT,
+  authStatus: AuthStatus.CHECKING,
   user: null,
   error: null,
   isLoading: false,
 
   setAuthStatus: (authStatus: AuthStatus) => set({ authStatus }),
+
+  initializeAuth: async () => {
+    const hasTokens = await tokenStorage.hasTokens();
+    set({
+      authStatus: hasTokens ? AuthStatus.LOGGED_IN : AuthStatus.LOGGED_OUT,
+    });
+  },
 
   login: async (email: string, password: string) => {
     set({ isLoading: true, error: null });
@@ -81,3 +91,13 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 }));
+
+// Listen for auth revocation events (token expired/revoked)
+authEvents.on(AUTH_EVENTS.REVOKED, () => {
+  useAuthStore.setState({
+    authStatus: AuthStatus.LOGGED_OUT,
+    user: null,
+    error: null,
+    isLoading: false,
+  });
+});

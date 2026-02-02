@@ -58,7 +58,7 @@ export const coffeeService = {
    * Remove a coffee from user's collection
    */
   async removeFromCollection(coffeeId: string): Promise<void> {
-    await apiClient.post(`/coffees/${coffeeId}/remove-from-collection`);
+    await apiClient.delete(`/coffees/${coffeeId}/remove-from-collection`);
   },
 
   /**

@@ -1,17 +1,29 @@
 import { AuthStatus } from "@/constants/authStatus";
 import { useAuthStore } from "@/stores/authStore";
 import { Redirect } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { Drawer } from "expo-router/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
-import { useTranslation } from "@/hooks/i18n/useTranslation";
+import { Loader } from "@/components/common/Loader";
+import { View } from "react-native";
 
 export default function TabLayout() {
-  const authStatus = useAuthStore((state) => state.authStatus);
+  const { authStatus, initializeAuth } = useAuthStore();
   const tint = useThemeColor({}, "tint");
   const background = useThemeColor({}, "background");
-  const { t } = useTranslation();
+
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
+  if (authStatus === AuthStatus.CHECKING) {
+    return (
+      <View style={{ flex: 1, backgroundColor: background }}>
+        <Loader />
+      </View>
+    );
+  }
 
   if (authStatus === AuthStatus.LOGGED_OUT) {
     return <Redirect href="/auth/login" />;
