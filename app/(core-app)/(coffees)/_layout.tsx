@@ -46,6 +46,26 @@ export default function CoffeesLayout() {
           headerLeft,
         }}
       />
+      <Stack.Screen
+        name="tasting/create/[coffeeId]"
+        options={{
+          headerShown: true,
+          title: t("tasting.addTasting"),
+          headerStyle: { backgroundColor },
+          headerTintColor: textColor,
+          headerLeft,
+        }}
+      />
+      <Stack.Screen
+        name="tasting/edit/[id]"
+        options={{
+          headerShown: true,
+          title: t("tasting.editTasting"),
+          headerStyle: { backgroundColor },
+          headerTintColor: textColor,
+          headerLeft,
+        }}
+      />
     </Stack>
   );
 }

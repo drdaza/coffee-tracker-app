@@ -155,6 +155,44 @@ export default {
     tastingHistory: "Tasting History",
     tastingHistoryPlaceholder: "Tasting history coming soon",
   },
+  tasting: {
+    // Screen titles
+    addTasting: "Add Tasting",
+    editTasting: "Edit Tasting",
+    createTasting: "Create Tasting",
+    // Buttons
+    creating: "Creating...",
+    saving: "Saving...",
+    saveChanges: "Save Changes",
+    deleteTasting: "Delete Tasting",
+    // Score labels
+    aroma: "Aroma",
+    flavor: "Flavor",
+    body: "Body",
+    acidity: "Acidity",
+    balance: "Balance",
+    aftertaste: "Aftertaste",
+    overallScore: "Overall Score",
+    // Notes
+    notes: "Notes",
+    notesPlaceholder: "Tasting notes (comma or newline separated)...",
+    // List
+    noTastings: "No tastings yet",
+    noTastingsMessage: "Be the first to add a tasting for this coffee!",
+    // Delete
+    deleteTitle: "Delete Tasting",
+    deleteConfirmation:
+      "Are you sure you want to delete this tasting? This action cannot be undone.",
+    // Messages
+    fetchError: "Failed to load tastings",
+    createError: "Failed to create tasting",
+    updateError: "Failed to update tasting",
+    updateSuccess: "Tasting updated successfully",
+    deleteError: "Failed to delete tasting",
+    deleteSuccess: "Tasting has been deleted",
+    noChanges: "No Changes",
+    noChangesMessage: "No changes were made to update.",
+  },
   validation: {
     required: "This field is required",
     invalidEmail: "Please enter a valid email",
@@ -162,5 +200,7 @@ export default {
     nameRequired: "Name is required",
     nameTooShort: "Name must be at least 2 characters",
     priceMustBePositive: "Price must be a positive number",
+    atLeastOneScore: "At least one score must be greater than zero",
+    scoreRange: "Scores must be between 0 and 10",
   },
 } as const;

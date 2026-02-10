@@ -155,6 +155,44 @@ export default {
     tastingHistory: "Historial de Catas",
     tastingHistoryPlaceholder: "Historial de catas próximamente",
   },
+  tasting: {
+    // Screen titles
+    addTasting: "Agregar Cata",
+    editTasting: "Editar Cata",
+    createTasting: "Crear Cata",
+    // Buttons
+    creating: "Creando...",
+    saving: "Guardando...",
+    saveChanges: "Guardar Cambios",
+    deleteTasting: "Eliminar Cata",
+    // Score labels
+    aroma: "Aroma",
+    flavor: "Sabor",
+    body: "Cuerpo",
+    acidity: "Acidez",
+    balance: "Balance",
+    aftertaste: "Retrogusto",
+    overallScore: "Puntuación General",
+    // Notes
+    notes: "Notas",
+    notesPlaceholder: "Notas de cata (separadas por coma o salto de línea)...",
+    // List
+    noTastings: "Aún no hay catas",
+    noTastingsMessage: "¡Sé el primero en agregar una cata para este café!",
+    // Delete
+    deleteTitle: "Eliminar Cata",
+    deleteConfirmation:
+      "¿Estás seguro de que quieres eliminar esta cata? Esta acción no se puede deshacer.",
+    // Messages
+    fetchError: "Error al cargar las catas",
+    createError: "Error al crear la cata",
+    updateError: "Error al actualizar la cata",
+    updateSuccess: "Cata actualizada exitosamente",
+    deleteError: "Error al eliminar la cata",
+    deleteSuccess: "La cata ha sido eliminada",
+    noChanges: "Sin cambios",
+    noChangesMessage: "No se realizaron cambios para actualizar.",
+  },
   validation: {
     required: "Este campo es obligatorio",
     invalidEmail: "Por favor ingresa un email válido",
@@ -162,5 +200,7 @@ export default {
     nameRequired: "El nombre es obligatorio",
     nameTooShort: "El nombre debe tener al menos 2 caracteres",
     priceMustBePositive: "El precio debe ser un número positivo",
+    atLeastOneScore: "Al menos una puntuación debe ser mayor que cero",
+    scoreRange: "Las puntuaciones deben estar entre 0 y 10",
   },
 } as const;
