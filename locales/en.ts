@@ -155,6 +155,18 @@ export default {
     tastingHistory: "Tasting History",
     tastingHistoryPlaceholder: "Tasting history coming soon",
   },
+  profile: {
+    title: "Profile",
+    email: "Email",
+    name: "Name",
+    role: "Role",
+    noProfile: "Profile not available",
+    noProfileMessage: "Unable to load your profile information",
+    logoutTitle: "Log Out",
+    logoutConfirmation: "Are you sure you want to log out?",
+    loggingOut: "Logging out...",
+    memberSince: "Member since",
+  },
   tasting: {
     // Screen titles
     addTasting: "Add Tasting",

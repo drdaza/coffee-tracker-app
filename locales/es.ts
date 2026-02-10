@@ -155,6 +155,18 @@ export default {
     tastingHistory: "Historial de Catas",
     tastingHistoryPlaceholder: "Historial de catas próximamente",
   },
+  profile: {
+    title: "Perfil",
+    email: "Correo electrónico",
+    name: "Nombre",
+    role: "Rol",
+    noProfile: "Perfil no disponible",
+    noProfileMessage: "No se pudo cargar la información de tu perfil",
+    logoutTitle: "Cerrar Sesión",
+    logoutConfirmation: "¿Estás seguro de que quieres cerrar sesión?",
+    loggingOut: "Cerrando sesión...",
+    memberSince: "Miembro desde",
+  },
   tasting: {
     // Screen titles
     addTasting: "Agregar Cata",

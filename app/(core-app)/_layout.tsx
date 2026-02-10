@@ -68,6 +68,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Drawer.Screen
+        name="(profile)"
+        options={{
+          title: "Profile",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
+          ),
+        }}
+      />
     </Drawer>
   );
 }
