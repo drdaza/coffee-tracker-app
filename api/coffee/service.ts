@@ -1,19 +1,21 @@
 import { apiClient } from "../client";
 import type {
   Coffee,
+  CoffeeQueryParams,
   CreateCoffeeDto,
   UpdateCoffeeDto,
   CoffeesResponse,
-  CollectionResponse,
 } from "./types";
 
 export const coffeeService = {
   /**
-   * Get all coffees
+   * Get paginated coffees with optional search, filter, sort
    */
-  async getCoffees(): Promise<Coffee[]> {
-    const response = await apiClient.get<CoffeesResponse>("/coffees");
-    return response.data.data;
+  async getCoffees(params?: CoffeeQueryParams): Promise<CoffeesResponse> {
+    const response = await apiClient.get<CoffeesResponse>("/coffees", {
+      params,
+    });
+    return response.data;
   },
 
   /**
@@ -62,22 +64,24 @@ export const coffeeService = {
   },
 
   /**
-   * Get user's coffee collection
+   * Get user's coffee collection with optional search, filter, sort, pagination
    */
-  async getMyCollection(): Promise<Coffee[]> {
-    const response = await apiClient.get<CollectionResponse>(
+  async getMyCollection(params?: CoffeeQueryParams): Promise<CoffeesResponse> {
+    const response = await apiClient.get<CoffeesResponse>(
       "/coffees/my-collection",
+      { params },
     );
-    return response.data.data;
+    return response.data;
   },
 
   /**
-   * Get coffees created by the current user
+   * Get coffees created by the current user with optional search, filter, sort, pagination
    */
-  async getMyCreations(): Promise<Coffee[]> {
+  async getMyCreations(params?: CoffeeQueryParams): Promise<CoffeesResponse> {
     const response = await apiClient.get<CoffeesResponse>(
       "/coffees/my-creations",
+      { params },
     );
-    return response.data.data;
+    return response.data;
   },
 };

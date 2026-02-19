@@ -71,6 +71,20 @@ export interface UpdateCoffeeDto {
   // image?: string; // Skipped for now - OCR feature post-MVP
 }
 
+// Query params for server-side search, filter, sort, pagination
+export interface CoffeeQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortBy?: "name" | "price" | "rate" | "createdAt";
+  sortOrder?: "asc" | "desc";
+  minPrice?: number;
+  maxPrice?: number;
+  minRate?: number;
+  maxRate?: number;
+  creatorId?: string;
+}
+
 // API Response types
 export interface CoffeesResponse {
   data: Coffee[];
@@ -88,4 +102,5 @@ export interface RemoveFromCollectionDto {
 
 export interface CollectionResponse {
   data: Coffee[];
+  meta: PaginationMeta;
 }

@@ -69,7 +69,7 @@ export default function TabLayout() {
         }}
       />
       <Drawer.Screen
-        name="(profile)"
+        name="(profile)/index"
         options={{
           title: "Profile",
           drawerIcon: ({ color, size }) => (

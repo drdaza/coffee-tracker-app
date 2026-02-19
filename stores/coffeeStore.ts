@@ -1,17 +1,28 @@
 import { create } from "zustand";
 import { coffeeService } from "@/api/coffee/service";
-import type { Coffee, CreateCoffeeDto, UpdateCoffeeDto } from "@/api/coffee";
+import type {
+  Coffee,
+  CoffeeQueryParams,
+  CreateCoffeeDto,
+  PaginationMeta,
+  UpdateCoffeeDto,
+} from "@/api/coffee";
 
 interface CoffeeStore {
   // State
   coffees: Coffee[];
+  coffeesMeta: PaginationMeta | null;
   myCollection: Coffee[];
+  collectionMeta: PaginationMeta | null;
   myCreations: Coffee[];
+  creationsMeta: PaginationMeta | null;
   coffeeDetail: Coffee | null;
   isLoading: boolean;
+  isLoadingMore: boolean;
 
   // Actions - Coffee CRUD
-  fetchCoffees: () => Promise<void>;
+  fetchCoffees: (params?: CoffeeQueryParams) => Promise<void>;
+  loadMoreCoffees: (params?: CoffeeQueryParams) => Promise<void>;
   fetchCoffee: (id: string) => Promise<void>;
   createCoffee: (data: CreateCoffeeDto) => Promise<Coffee>;
   updateCoffee: (id: string, data: UpdateCoffeeDto) => Promise<Coffee>;
@@ -20,15 +31,16 @@ interface CoffeeStore {
   // Actions - Collection Management
   addToCollection: (coffeeId: string) => Promise<void>;
   removeFromCollection: (coffeeId: string) => Promise<void>;
-  fetchMyCollection: () => Promise<void>;
-  fetchMyCreations: () => Promise<void>;
+  fetchMyCollection: (params?: CoffeeQueryParams) => Promise<void>;
+  loadMoreCollection: (params?: CoffeeQueryParams) => Promise<void>;
+  fetchMyCreations: (params?: CoffeeQueryParams) => Promise<void>;
+  loadMoreCreations: (params?: CoffeeQueryParams) => Promise<void>;
 
   // Utility
   setCoffeeDetail: (coffee: Coffee | null) => void;
 }
 
 export const useCoffeeStore = create<CoffeeStore>((set, get) => {
-  // Helper function to handle async operations with loading state
   const withLoading = async <T>(operation: () => Promise<T>): Promise<T> => {
     set({ isLoading: true });
     try {
@@ -37,23 +49,57 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
       return result;
     } catch (error) {
       set({ isLoading: false });
-      throw error; // Let UI handle error display
+      throw error;
+    }
+  };
+
+  const withLoadingMore = async <T>(
+    operation: () => Promise<T>,
+  ): Promise<T> => {
+    set({ isLoadingMore: true });
+    try {
+      const result = await operation();
+      set({ isLoadingMore: false });
+      return result;
+    } catch (error) {
+      set({ isLoadingMore: false });
+      throw error;
     }
   };
 
   return {
     // Initial State
     coffees: [],
+    coffeesMeta: null,
     myCollection: [],
+    collectionMeta: null,
     myCreations: [],
+    creationsMeta: null,
     coffeeDetail: null,
     isLoading: false,
+    isLoadingMore: false,
 
     // Coffee CRUD Actions
-    fetchCoffees: () =>
+    fetchCoffees: (params?: CoffeeQueryParams) =>
       withLoading(async () => {
-        const coffees = await coffeeService.getCoffees();
-        set({ coffees });
+        const response = await coffeeService.getCoffees(params);
+        set({ coffees: response.data, coffeesMeta: response.meta });
+      }),
+
+    loadMoreCoffees: (params?: CoffeeQueryParams) =>
+      withLoadingMore(async () => {
+        const { coffeesMeta } = get();
+        if (!coffeesMeta?.hasNextPage) return;
+
+        const nextPage = coffeesMeta.page + 1;
+        const response = await coffeeService.getCoffees({
+          ...params,
+          page: nextPage,
+        });
+        set((state) => ({
+          coffees: [...state.coffees, ...response.data],
+          coffeesMeta: response.meta,
+        }));
       }),
 
     fetchCoffee: (id: string) =>
@@ -113,16 +159,48 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
         }));
       }),
 
-    fetchMyCollection: () =>
+    fetchMyCollection: (params?: CoffeeQueryParams) =>
       withLoading(async () => {
-        const collection = await coffeeService.getMyCollection();
-        set({ myCollection: collection });
+        const response = await coffeeService.getMyCollection(params);
+        set({ myCollection: response.data, collectionMeta: response.meta });
       }),
 
-    fetchMyCreations: () =>
+    loadMoreCollection: (params?: CoffeeQueryParams) =>
+      withLoadingMore(async () => {
+        const { collectionMeta } = get();
+        if (!collectionMeta?.hasNextPage) return;
+
+        const nextPage = collectionMeta.page + 1;
+        const response = await coffeeService.getMyCollection({
+          ...params,
+          page: nextPage,
+        });
+        set((state) => ({
+          myCollection: [...state.myCollection, ...response.data],
+          collectionMeta: response.meta,
+        }));
+      }),
+
+    fetchMyCreations: (params?: CoffeeQueryParams) =>
       withLoading(async () => {
-        const creations = await coffeeService.getMyCreations();
-        set({ myCreations: creations });
+        const response = await coffeeService.getMyCreations(params);
+        set({ myCreations: response.data, creationsMeta: response.meta });
+      }),
+
+    loadMoreCreations: (params?: CoffeeQueryParams) =>
+      withLoadingMore(async () => {
+        const { creationsMeta } = get();
+        if (!creationsMeta?.hasNextPage) return;
+
+        const nextPage = creationsMeta.page + 1;
+        const response = await coffeeService.getMyCreations({
+          ...params,
+          page: nextPage,
+        });
+        set((state) => ({
+          myCreations: [...state.myCreations, ...response.data],
+          creationsMeta: response.meta,
+        }));
       }),
 
     // Utility Actions

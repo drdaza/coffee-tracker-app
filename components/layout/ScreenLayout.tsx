@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 interface ScreenLayoutProps {
   children?: ReactNode;
+  headerComponent?: ReactNode;
   loading?: boolean;
   error?: string | null;
   isEmpty?: boolean;
@@ -20,6 +21,7 @@ interface ScreenLayoutProps {
 
 export const ScreenLayout = ({
   children,
+  headerComponent,
   loading = false,
   error = null,
   isEmpty = false,
@@ -31,41 +33,24 @@ export const ScreenLayout = ({
 }: ScreenLayoutProps) => {
   const background = useThemeColor({}, "background");
 
-  const Container = ({ children }: { children: ReactNode }) => (
-    <View style={[styles.container, { backgroundColor: background }, containerStyle]}>
-      {children}
+  const renderContent = () => {
+    if (loading) return <Loader />;
+    if (error) return <ErrorState message={error} onRetry={onRetry} />;
+    if (isEmpty)
+      return (
+        <EmptyState icon={emptyIcon} title={emptyTitle} message={emptyMessage} />
+      );
+    return children ?? null;
+  };
+
+  return (
+    <View
+      style={[styles.container, { backgroundColor: background }, containerStyle]}
+    >
+      {headerComponent ?? null}
+      {renderContent()}
     </View>
   );
-
-  // Loading state
-  if (loading) {
-    return (
-      <Container>
-        <Loader />
-      </Container>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <Container>
-        <ErrorState message={error} onRetry={onRetry} />
-      </Container>
-    );
-  }
-
-  // Empty state
-  if (isEmpty) {
-    return (
-      <Container>
-        <EmptyState icon={emptyIcon} title={emptyTitle} message={emptyMessage} />
-      </Container>
-    );
-  }
-
-  // Content
-  return <Container>{children ?? null}</Container>;
 };
 
 const styles = StyleSheet.create({
