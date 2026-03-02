@@ -2,12 +2,26 @@ import { apiClient } from "./client";
 import { tokenStorage } from "./token-storage";
 import type {
   LoginRequest,
+  RegisterRequest,
   AuthResponse,
   RefreshTokenResponse,
   CheckStatusResponse,
   LogoutResponse,
   User,
 } from "./types";
+
+export const registerUser = async (
+  data: RegisterRequest,
+): Promise<AuthResponse> => {
+  const { data: response } = await apiClient.post<AuthResponse>(
+    "/auth/register",
+    data,
+  );
+
+  await tokenStorage.setTokens(response.token, response.refreshToken);
+
+  return response;
+};
 
 export const loginUser = async (
   credentials: LoginRequest,

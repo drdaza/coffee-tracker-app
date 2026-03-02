@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { coffeeService } from "@/api/coffee/service";
+import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
 import type {
   Coffee,
   CoffeeQueryParams,
@@ -206,4 +207,19 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
     // Utility Actions
     setCoffeeDetail: (coffee: Coffee | null) => set({ coffeeDetail: coffee }),
   };
+});
+
+// Clear all coffee data on auth revocation (logout / token expiry)
+authEvents.on(AUTH_EVENTS.REVOKED, () => {
+  useCoffeeStore.setState({
+    coffees: [],
+    coffeesMeta: null,
+    myCollection: [],
+    collectionMeta: null,
+    myCreations: [],
+    creationsMeta: null,
+    coffeeDetail: null,
+    isLoading: false,
+    isLoadingMore: false,
+  });
 });

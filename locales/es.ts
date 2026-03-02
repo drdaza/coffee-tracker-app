@@ -10,6 +10,9 @@ export default {
     success: "Éxito",
     unauthorized: "No autorizado",
     unexpectedError: "Ocurrió un error inesperado. Por favor intenta de nuevo.",
+    somethingWentWrong: "Algo salió mal",
+    tryAgain: "Inténtalo de nuevo",
+    retry: "Reintentar",
   },
   home: {
     title: "Inicio",
@@ -38,6 +41,13 @@ export default {
     registerButton: "Registrarse",
     dontHaveAccount: "¿No tienes una cuenta? Regístrate",
     alreadyHaveAccount: "¿Ya tienes una cuenta? Inicia sesión",
+    registering: "Registrando...",
+    registerFailed: "Error al registrarse",
+    passwordsMismatch: "Las contraseñas no coinciden",
+    fillAllFields: "Por favor completa todos los campos",
+    loginFailed: "Error al iniciar sesión",
+    enterCredentials: "Por favor ingresa email y contraseña",
+    loggingIn: "Iniciando sesión...",
   },
   browse: {
     title: "Explorar",

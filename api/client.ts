@@ -86,7 +86,10 @@ function createApiClient(): AxiosInstance {
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           })
-            .then(() => {
+            .then((token) => {
+              if (originalRequest.headers) {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+              }
               return client(originalRequest);
             })
             .catch((err) => {

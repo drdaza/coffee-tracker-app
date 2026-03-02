@@ -21,7 +21,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please enter email and password");
+      Alert.alert(t("common.error"), t("auth.enterCredentials"));
       return;
     }
 
@@ -29,7 +29,7 @@ const LoginScreen = () => {
       await login(email, password);
       router.replace("/(core-app)/(coffees)/(tabs)/(my-collection)");
     } catch {
-      Alert.alert("Login Failed", error || "An error occurred");
+      Alert.alert(t("auth.loginFailed"), error || t("common.unexpectedError"));
     }
   };
 
@@ -96,7 +96,7 @@ const LoginScreen = () => {
         )}
 
         <CustomButton
-          label={isLoading ? "Logging in..." : t("auth.loginButton")}
+          label={isLoading ? t("auth.loggingIn") : t("auth.loginButton")}
           size="large"
           onPress={handleLogin}
           disabled={isLoading}

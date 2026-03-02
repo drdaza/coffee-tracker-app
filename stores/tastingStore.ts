@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { tastingService } from "@/api/tasting/service";
+import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
 import type {
   Tasting,
   CreateTastingDto,
@@ -93,4 +94,13 @@ export const useTastingStore = create<TastingStore>((set) => {
       set({ tastingDetail: tasting }),
     clearCoffeeTastings: () => set({ coffeeTastings: [], tastingDetail: null }),
   };
+});
+
+// Clear all tasting data on auth revocation (logout / token expiry)
+authEvents.on(AUTH_EVENTS.REVOKED, () => {
+  useTastingStore.setState({
+    coffeeTastings: [],
+    tastingDetail: null,
+    isLoading: false,
+  });
 });

@@ -10,6 +10,9 @@ export default {
     success: "Success",
     unauthorized: "Unauthorized",
     unexpectedError: "An unexpected error occurred. Please try again.",
+    somethingWentWrong: "Something went wrong",
+    tryAgain: "Try again",
+    retry: "Retry",
   },
   home: {
     title: "Home",
@@ -38,6 +41,13 @@ export default {
     registerButton: "Sign Up",
     dontHaveAccount: "Don't have an account? Sign up",
     alreadyHaveAccount: "Already have an account? Log in",
+    registering: "Signing up...",
+    registerFailed: "Registration Failed",
+    passwordsMismatch: "Passwords do not match",
+    fillAllFields: "Please fill in all fields",
+    loginFailed: "Login Failed",
+    enterCredentials: "Please enter email and password",
+    loggingIn: "Logging in...",
   },
   browse: {
     title: "Browse",
