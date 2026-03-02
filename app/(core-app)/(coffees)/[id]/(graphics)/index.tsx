@@ -35,6 +35,11 @@ export default function CoffeeGraphicsScreen() {
     isLoading: tastingLoading,
   } = useTastingStore();
 
+  // Can create tasting only if creator/collector AND hasn't tasted yet
+  const canCreateTasting =
+    (coffeeDetail?.isCreator || coffeeDetail?.isInCollection) &&
+    !coffeeDetail?.hasTasted;
+
   useEffect(() => {
     if (id) {
       fetchCoffeeTastings(id);
@@ -185,12 +190,14 @@ export default function CoffeeGraphicsScreen() {
           )}
         </ScrollView>
 
-        {/* FAB for adding tasting */}
-        <FloatingActionButton
-          onPress={handleAddTasting}
-          icon="add"
-          style={styles.fab}
-        />
+        {/* FAB for adding tasting — only if user is creator/collector and hasn't tasted yet */}
+        {canCreateTasting ? (
+          <FloatingActionButton
+            onPress={handleAddTasting}
+            icon="add"
+            style={styles.fab}
+          />
+        ) : null}
       </View>
     </ScreenLayout>
   );

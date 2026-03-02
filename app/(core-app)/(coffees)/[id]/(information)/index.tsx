@@ -30,15 +30,14 @@ export default function CoffeeInformationScreen() {
   const borderColor = useThemeColor({}, "border");
 
   // Store state
-  const { coffeeDetail, myCollection, isLoading, fetchCoffee } =
-    useCoffeeStore();
+  const { coffeeDetail, isLoading, fetchCoffee } = useCoffeeStore();
   const { user } = useAuthStore();
 
   // Local state
   const [error, setError] = useState<string | null>(null);
 
-  // Check if coffee is in user's collection
-  const isInCollection = myCollection.some((c) => c.id === id);
+  // Resolved by the API — reliable regardless of pagination
+  const isInCollection = coffeeDetail?.isInCollection ?? false;
 
   // Coffee actions hook
   const {

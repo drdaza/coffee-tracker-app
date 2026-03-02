@@ -40,6 +40,8 @@ export interface Coffee {
   updatedAt: string;
   creator: CoffeeCreator;
   isCreator: boolean;
+  isInCollection: boolean;
+  hasTasted: boolean;
   stats: CoffeeStats;
 }
 
