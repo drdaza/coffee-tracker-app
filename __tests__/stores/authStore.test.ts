@@ -2,6 +2,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { AuthStatus } from "@/constants/authStatus";
 import { AppError } from "@/api/errors";
 import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
+import { makeUser, makeAuthResponse } from "@/__tests__/factories";
 
 // Mock dependencies
 jest.mock("@/api/auth", () => ({
@@ -37,20 +38,8 @@ const mockCheckAuthStatus = checkAuthStatus as jest.MockedFunction<
 >;
 const mockTokenStorage = tokenStorage as jest.Mocked<typeof tokenStorage>;
 
-const mockUser = {
-  id: "1",
-  name: "Test User",
-  email: "test@test.com",
-  role: "USER" as const,
-  createdAt: "2024-01-01",
-  updatedAt: "2024-01-01",
-};
-
-const mockAuthResponse = {
-  user: { id: "1", name: "Test User", email: "test@test.com", role: "USER" as const },
-  token: "access-token",
-  refreshToken: "refresh-token",
-};
+const mockUser = makeUser();
+const mockAuthResponse = makeAuthResponse();
 
 describe("authStore", () => {
   beforeEach(() => {
@@ -114,6 +103,19 @@ describe("authStore", () => {
 
       expect(mockTokenStorage.clearTokens).toHaveBeenCalled();
       expect(useAuthStore.getState().authStatus).toBe(AuthStatus.LOGGED_OUT);
+      expect(useAuthStore.getState().user).toBeNull();
+    });
+
+    it("stays LOGGED_IN on network error and trusts existing tokens", async () => {
+      mockTokenStorage.hasTokens.mockResolvedValue(true);
+      mockCheckAuthStatus.mockRejectedValue(
+        new AppError("Network error - no response from server", 0),
+      );
+
+      await useAuthStore.getState().initializeAuth();
+
+      expect(mockTokenStorage.clearTokens).not.toHaveBeenCalled();
+      expect(useAuthStore.getState().authStatus).toBe(AuthStatus.LOGGED_IN);
       expect(useAuthStore.getState().user).toBeNull();
     });
   });

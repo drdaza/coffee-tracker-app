@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { coffeeService } from "@/api/coffee/service";
 import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
+import { createWithLoading } from "@/utils/storeHelpers";
 import type {
   Coffee,
   CoffeeQueryParams,
@@ -42,31 +43,8 @@ interface CoffeeStore {
 }
 
 export const useCoffeeStore = create<CoffeeStore>((set, get) => {
-  const withLoading = async <T>(operation: () => Promise<T>): Promise<T> => {
-    set({ isLoading: true });
-    try {
-      const result = await operation();
-      set({ isLoading: false });
-      return result;
-    } catch (error) {
-      set({ isLoading: false });
-      throw error;
-    }
-  };
-
-  const withLoadingMore = async <T>(
-    operation: () => Promise<T>,
-  ): Promise<T> => {
-    set({ isLoadingMore: true });
-    try {
-      const result = await operation();
-      set({ isLoadingMore: false });
-      return result;
-    } catch (error) {
-      set({ isLoadingMore: false });
-      throw error;
-    }
-  };
+  const withLoading = createWithLoading(set);
+  const withLoadingMore = createWithLoading(set, "isLoadingMore");
 
   return {
     // Initial State

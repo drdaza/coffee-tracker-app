@@ -1,7 +1,7 @@
 import { useCoffeeStore } from "@/stores/coffeeStore";
 import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
-import type { Coffee, CoffeesResponse, PaginationMeta } from "@/api/coffee";
 import { coffeeService } from "@/api/coffee/service";
+import { makeCoffee, makeMeta, makeResponse } from "@/__tests__/factories";
 
 // Mock the coffee service
 jest.mock("@/api/coffee/service", () => ({
@@ -42,46 +42,6 @@ jest.mock("@/utils/authEvents", () => {
 });
 
 const mockService = coffeeService as jest.Mocked<typeof coffeeService>;
-
-const makeCoffee = (overrides: Partial<Coffee> = {}): Coffee => ({
-  id: "1",
-  name: "Test Coffee",
-  roaster: "Test Roaster",
-  origin: "Colombia",
-  roastLevel: "MEDIUM" as Coffee["roastLevel"],
-  brewingMethod: "POUR_OVER" as Coffee["brewingMethod"],
-  process: null,
-  price: 2500,
-  description: null,
-  image: null,
-  rate: null,
-  createdAt: "2024-01-01",
-  updatedAt: "2024-01-01",
-  creator: { id: "u1", name: "Creator", email: "c@test.com" },
-  isCreator: false,
-  isInCollection: false,
-  hasTasted: false,
-  stats: { totalInCollections: 0, totalTastings: 0 },
-  ...overrides,
-});
-
-const makeMeta = (overrides: Partial<PaginationMeta> = {}): PaginationMeta => ({
-  total: 10,
-  page: 1,
-  limit: 10,
-  totalPages: 1,
-  hasNextPage: false,
-  hasPreviousPage: false,
-  ...overrides,
-});
-
-const makeResponse = (
-  data: Coffee[] = [],
-  meta?: Partial<PaginationMeta>,
-): CoffeesResponse => ({
-  data,
-  meta: makeMeta(meta),
-});
 
 const initialState = {
   coffees: [],

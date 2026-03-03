@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { tastingService } from "@/api/tasting/service";
 import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
+import { createWithLoading } from "@/utils/storeHelpers";
 import type {
   Tasting,
   CreateTastingDto,
@@ -26,17 +27,7 @@ interface TastingStore {
 }
 
 export const useTastingStore = create<TastingStore>((set) => {
-  const withLoading = async <T>(operation: () => Promise<T>): Promise<T> => {
-    set({ isLoading: true });
-    try {
-      const result = await operation();
-      set({ isLoading: false });
-      return result;
-    } catch (error) {
-      set({ isLoading: false });
-      throw error;
-    }
-  };
+  const withLoading = createWithLoading(set);
 
   return {
     // Initial State

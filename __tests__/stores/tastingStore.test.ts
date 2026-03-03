@@ -1,6 +1,6 @@
 import { useTastingStore } from "@/stores/tastingStore";
 import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
-import type { Tasting } from "@/api/tasting";
+import { makeTasting } from "@/__tests__/factories";
 
 // Mock the tasting service
 jest.mock("@/api/tasting/service", () => ({
@@ -39,23 +39,6 @@ jest.mock("@/utils/authEvents", () => {
 import { tastingService } from "@/api/tasting/service";
 
 const mockService = tastingService as jest.Mocked<typeof tastingService>;
-
-const makeTasting = (overrides: Partial<Tasting> = {}): Tasting => ({
-  id: "t1",
-  aroma: 7,
-  flavor: 8,
-  body: 6,
-  acidity: 5,
-  balance: 7,
-  aftertaste: 6,
-  overallScore: 6.5,
-  notes: ["fruity", "smooth"],
-  coffeeId: "c1",
-  userId: "u1",
-  createdAt: "2024-01-01",
-  updatedAt: "2024-01-01",
-  ...overrides,
-});
 
 const initialState = {
   coffeeTastings: [],

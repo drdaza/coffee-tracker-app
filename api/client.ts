@@ -117,6 +117,7 @@ function createApiClient(): AxiosInstance {
 
           processQueue(null, newAccessToken);
           isRefreshing = false;
+          authEvents.emit(AUTH_EVENTS.REFRESHED);
 
           // Retry original request with new token
           if (originalRequest.headers) {

@@ -2,7 +2,7 @@ import { AuthStatus } from '@/constants/authStatus';
 import { create } from 'zustand';
 import { loginUser, registerUser, logoutUser, checkAuthStatus } from '@/api/auth';
 import { tokenStorage } from '@/api/token-storage';
-import { AppError } from '@/api/errors';
+import { AppError, ErrorType } from '@/api/errors';
 import { authEvents, AUTH_EVENTS } from '@/utils/authEvents';
 import type { User } from '@/api/types';
 
@@ -37,7 +37,13 @@ export const useAuthStore = create<AuthStore>((set) => ({
     try {
       const user = await checkAuthStatus();
       set({ authStatus: AuthStatus.LOGGED_IN, user });
-    } catch {
+    } catch (error) {
+      // Network error: trust existing tokens and stay logged in
+      if (error instanceof AppError && error.type === ErrorType.NETWORK) {
+        set({ authStatus: AuthStatus.LOGGED_IN, user: null });
+        return;
+      }
+      // Auth/server error: tokens are invalid, log out
       await tokenStorage.clearTokens();
       set({ authStatus: AuthStatus.LOGGED_OUT, user: null });
     }
