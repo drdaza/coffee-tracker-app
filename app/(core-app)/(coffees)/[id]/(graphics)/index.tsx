@@ -168,9 +168,7 @@ export default function CoffeeGraphicsScreen() {
                     <ThemedText style={[styles.emptyText, { color: icon }]}>
                       {t("tasting.noTastings")}
                     </ThemedText>
-                    <ThemedText
-                      style={[styles.emptySubtext, { color: icon }]}
-                    >
+                    <ThemedText style={[styles.emptySubtext, { color: icon }]}>
                       {t("tasting.noTastingsMessage")}
                     </ThemedText>
                   </View>
@@ -272,7 +270,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: "absolute",
-    right: 16,
-    bottom: 16,
+    right: 20,
+    bottom: 45,
   },
 });

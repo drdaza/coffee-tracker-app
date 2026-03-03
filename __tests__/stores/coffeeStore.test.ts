@@ -1,6 +1,7 @@
 import { useCoffeeStore } from "@/stores/coffeeStore";
 import { authEvents, AUTH_EVENTS } from "@/utils/authEvents";
 import type { Coffee, CoffeesResponse, PaginationMeta } from "@/api/coffee";
+import { coffeeService } from "@/api/coffee/service";
 
 // Mock the coffee service
 jest.mock("@/api/coffee/service", () => ({
@@ -39,8 +40,6 @@ jest.mock("@/utils/authEvents", () => {
     },
   };
 });
-
-import { coffeeService } from "@/api/coffee/service";
 
 const mockService = coffeeService as jest.Mocked<typeof coffeeService>;
 
@@ -305,28 +304,75 @@ describe("coffeeStore", () => {
   });
 
   describe("addToCollection", () => {
-    it("calls service and re-fetches collection", async () => {
+    it("calls service and optimistically updates local state", async () => {
+      const coffee = makeCoffee({ id: "1", isInCollection: false });
+      useCoffeeStore.setState({ coffees: [coffee], myCollection: [] });
       mockService.addToCollection.mockResolvedValue(undefined);
-      mockService.getMyCollection.mockResolvedValue(
-        makeResponse([makeCoffee()]),
-      );
 
       await useCoffeeStore.getState().addToCollection("1");
 
       expect(mockService.addToCollection).toHaveBeenCalledWith("1");
-      expect(mockService.getMyCollection).toHaveBeenCalled();
+      expect(mockService.getMyCollection).not.toHaveBeenCalled();
+
+      const state = useCoffeeStore.getState();
+      expect(state.coffees[0].isInCollection).toBe(true);
+      expect(state.myCollection).toHaveLength(1);
+      expect(state.myCollection[0].id).toBe("1");
+      expect(state.myCollection[0].isInCollection).toBe(true);
+    });
+
+    it("updates coffeeDetail when it matches the added coffee", async () => {
+      const coffee = makeCoffee({ id: "1", isInCollection: false });
+      useCoffeeStore.setState({
+        coffees: [coffee],
+        myCollection: [],
+        coffeeDetail: coffee,
+      });
+      mockService.addToCollection.mockResolvedValue(undefined);
+
+      await useCoffeeStore.getState().addToCollection("1");
+
+      expect(useCoffeeStore.getState().coffeeDetail?.isInCollection).toBe(true);
+    });
+
+    it("does not duplicate coffee in myCollection if already present", async () => {
+      const coffee = makeCoffee({ id: "1", isInCollection: true });
+      useCoffeeStore.setState({ coffees: [coffee], myCollection: [coffee] });
+      mockService.addToCollection.mockResolvedValue(undefined);
+
+      await useCoffeeStore.getState().addToCollection("1");
+
+      expect(useCoffeeStore.getState().myCollection).toHaveLength(1);
     });
   });
 
   describe("removeFromCollection", () => {
     it("removes coffee from myCollection list", async () => {
-      const coffee = makeCoffee({ id: "1" });
-      useCoffeeStore.setState({ myCollection: [coffee] });
+      const coffee = makeCoffee({ id: "1", isInCollection: true });
+      useCoffeeStore.setState({ coffees: [coffee], myCollection: [coffee] });
       mockService.removeFromCollection.mockResolvedValue(undefined);
 
       await useCoffeeStore.getState().removeFromCollection("1");
 
-      expect(useCoffeeStore.getState().myCollection).toHaveLength(0);
+      const state = useCoffeeStore.getState();
+      expect(state.myCollection).toHaveLength(0);
+      expect(state.coffees[0].isInCollection).toBe(false);
+    });
+
+    it("updates coffeeDetail when it matches the removed coffee", async () => {
+      const coffee = makeCoffee({ id: "1", isInCollection: true });
+      useCoffeeStore.setState({
+        coffees: [coffee],
+        myCollection: [coffee],
+        coffeeDetail: coffee,
+      });
+      mockService.removeFromCollection.mockResolvedValue(undefined);
+
+      await useCoffeeStore.getState().removeFromCollection("1");
+
+      expect(useCoffeeStore.getState().coffeeDetail?.isInCollection).toBe(
+        false,
+      );
     });
   });
 

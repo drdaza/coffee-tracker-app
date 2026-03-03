@@ -23,7 +23,7 @@ const BrewingMethodIcon = ({
   return <Ionicons name="cafe" size={size} color={color} />;
 };
 
-export const CoffeeCard = ({
+export const CoffeeCard = React.memo(({
   coffee,
   onPress,
   backgroundColor,
@@ -60,7 +60,7 @@ export const CoffeeCard = ({
               >
                 {coffee.roaster}
               </ThemedText>
-              {coffee.rate !== undefined && coffee.rate > 0 && (
+              {coffee.rate != null && coffee.rate > 0 && (
                 <StarRating
                   rating={coffee.rate}
                   containerStyle={styles.ratingContainer}
@@ -83,7 +83,9 @@ export const CoffeeCard = ({
       )}
     </Pressable>
   );
-};
+});
+
+CoffeeCard.displayName = "CoffeeCard";
 
 const styles = StyleSheet.create({
   card: {

@@ -3,12 +3,20 @@ import * as SecureStore from 'expo-secure-store';
 const ACCESS_TOKEN_KEY = 'accessToken';
 const REFRESH_TOKEN_KEY = 'refreshToken';
 
+let cachedAccessToken: string | null = null;
+
 export const tokenStorage = {
   async getAccessToken(): Promise<string | null> {
-    return await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
+    if (cachedAccessToken !== null) {
+      return cachedAccessToken;
+    }
+    const token = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
+    cachedAccessToken = token;
+    return token;
   },
 
   async setAccessToken(token: string): Promise<void> {
+    cachedAccessToken = token;
     await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
   },
 
@@ -21,6 +29,7 @@ export const tokenStorage = {
   },
 
   async setTokens(accessToken: string, refreshToken: string): Promise<void> {
+    cachedAccessToken = accessToken;
     await Promise.all([
       SecureStore.setItemAsync(ACCESS_TOKEN_KEY, accessToken),
       SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken),
@@ -28,6 +37,7 @@ export const tokenStorage = {
   },
 
   async clearTokens(): Promise<void> {
+    cachedAccessToken = null;
     await Promise.all([
       SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY),
       SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY),
@@ -36,7 +46,7 @@ export const tokenStorage = {
 
   async hasTokens(): Promise<boolean> {
     const [accessToken, refreshToken] = await Promise.all([
-      SecureStore.getItemAsync(ACCESS_TOKEN_KEY),
+      this.getAccessToken(),
       SecureStore.getItemAsync(REFRESH_TOKEN_KEY),
     ]);
     return !!(accessToken && refreshToken);

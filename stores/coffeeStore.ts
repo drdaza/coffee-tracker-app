@@ -149,13 +149,44 @@ export const useCoffeeStore = create<CoffeeStore>((set, get) => {
     addToCollection: (coffeeId: string) =>
       withLoading(async () => {
         await coffeeService.addToCollection(coffeeId);
-        await get().fetchMyCollection();
+        set((state) => {
+          const coffee =
+            state.coffees.find((c) => c.id === coffeeId) ??
+            (state.coffeeDetail?.id === coffeeId
+              ? state.coffeeDetail
+              : undefined);
+
+          const updatedCoffees = state.coffees.map((c) =>
+            c.id === coffeeId ? { ...c, isInCollection: true } : c,
+          );
+          const updatedDetail =
+            state.coffeeDetail?.id === coffeeId
+              ? { ...state.coffeeDetail, isInCollection: true }
+              : state.coffeeDetail;
+          const updatedCollection =
+            coffee && !state.myCollection.some((c) => c.id === coffeeId)
+              ? [...state.myCollection, { ...coffee, isInCollection: true }]
+              : state.myCollection;
+
+          return {
+            coffees: updatedCoffees,
+            coffeeDetail: updatedDetail,
+            myCollection: updatedCollection,
+          };
+        });
       }),
 
     removeFromCollection: (coffeeId: string) =>
       withLoading(async () => {
         await coffeeService.removeFromCollection(coffeeId);
         set((state) => ({
+          coffees: state.coffees.map((c) =>
+            c.id === coffeeId ? { ...c, isInCollection: false } : c,
+          ),
+          coffeeDetail:
+            state.coffeeDetail?.id === coffeeId
+              ? { ...state.coffeeDetail, isInCollection: false }
+              : state.coffeeDetail,
           myCollection: state.myCollection.filter((c) => c.id !== coffeeId),
         }));
       }),
